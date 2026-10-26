@@ -352,7 +352,6 @@ details p{margin:0 0 24px;color:var(--mute);max-width:62ch}
 .ct:hover i{transform:rotate(-45deg)}
 @media (max-width:640px){.ct{grid-template-columns:minmax(0,1fr) auto}.ct span{grid-column:1/-1}}
 footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);overflow:hidden}
-.wordmark{font:800 clamp(80px,24vw,400px)/.8 var(--f-display);letter-spacing:-.07em;margin:0 0 30px;color:transparent;-webkit-text-stroke:1px var(--line-2);white-space:nowrap}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;color:var(--mute)}
 
 /* cursor */
@@ -720,7 +719,6 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
 
 <footer>
   <div class="wrap">
-    <p class="wordmark" aria-hidden="true">KADR</p>
     <div class="foot mono"><span>© 2026 KADR Studio</span><span>Моушн на ИИ · Сайты · Приложения</span><a href="#top">Наверх ↑</a></div>
   </div>
 </footer>
@@ -1025,7 +1023,6 @@ gsap.from('.steps5 > div', { y: 30, opacity: 0, stagger: .1, duration: 1, ease: 
 /* contact title */
 const cChars = splitChars($('.contact-title'));
 gsap.from(cChars, { yPercent: 115, rotate: 6, duration: 1.2, ease: E, stagger: .03, scrollTrigger: { trigger: '.contact-title', start: 'top 85%', once: true } });
-gsap.from('.wordmark', { yPercent: 40, opacity: 0, duration: 1.6, ease: E, scrollTrigger: { trigger: 'footer', start: 'top 95%', once: true } });
 
 /* magnetic buttons */
 if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
