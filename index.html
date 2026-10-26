@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KADR Studio</title>
+<meta name="description" content="KADR — моушн-дизайн на нейросетях: рекламные ролики, Reels и анимация. А также сайты и мобильные приложения под ключ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Unbounded:wght@300;500;700;800&display=swap">
+<style>
+/* Layout: cinematic full-bleed bands on a 1320px wrap; camera HUD (viewfinder corners, timecode, keyframe ◆) is the recurring motif */
+:root{
+  --ink:#0C0B0E; --ink-2:#141317; --ink-3:#1E1C22;
+  --paper:#F1EBE3; --mute:#9C95A0; --line:rgba(241,235,227,.12); --line-2:rgba(241,235,227,.22);
+  --tungsten:#FF8A3D; --tungsten-2:#FFB878; --teal:#2FB7AE; --teal-2:#0F4F55;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Onest","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gl:max(clamp(16px,4vw,56px),env(safe-area-inset-left,0px));
+  --gr:max(clamp(16px,4vw,56px),env(safe-area-inset-right,0px));
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  color-scheme:dark;
+}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--paper);font:400 17px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:-50%;background:var(--grain);opacity:.03;pointer-events:none;z-index:90}
+@keyframes grain{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-1%,3%)}}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--tungsten);color:var(--ink)}
+:focus-visible{outline:2px solid var(--tungsten);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1320px;margin-inline:auto;padding-left:var(--gl);padding-right:var(--gr)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.eyebrow{color:var(--tungsten-2);display:flex;align-items:center;gap:10px;margin:0 0 20px}
+.eyebrow::before{content:"";width:9px;height:9px;background:currentColor;transform:rotate(45deg)}
+.h2{font:700 clamp(34px,5.4vw,84px)/1 var(--f-display);letter-spacing:-.035em;margin:0;text-wrap:balance}
+.h2 em{font-style:normal;color:var(--tungsten)}
+.w{display:inline-block;white-space:nowrap;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+.c{display:inline-block;will-change:transform}
+
+/* buttons */
+.btn{--bg:var(--tungsten);--fg:var(--ink);position:relative;display:inline-flex;align-items:center;gap:12px;padding:18px 28px;border-radius:999px;background:var(--bg);color:var(--fg);font:600 15px/1 var(--f-body);border:1px solid var(--bg);cursor:pointer;overflow:hidden;isolation:isolate;transition:color .35s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;background:var(--paper);transform:translateY(101%);border-radius:inherit;transition:transform .45s var(--ease);z-index:-1}
+.btn:hover::before{transform:none}
+.btn .arr{transition:transform .35s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn-ghost{--bg:transparent;--fg:var(--paper);border-color:var(--line-2)}
+.btn-ghost:hover{color:var(--ink)}
+.btn-sm{padding:12px 18px;font-size:14px}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:28px;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:18px;padding-left:var(--gl);padding-right:var(--gr);transition:transform .5s var(--ease),background .3s,backdrop-filter .3s}
+.nav.solid{background:rgba(12,11,14,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav.hide{transform:translateY(-100%)}
+.logo{display:flex;align-items:center;gap:10px;font:800 20px/1 var(--f-display);letter-spacing:-.02em}
+.logo sup{font:500 10px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);vertical-align:top}
+.logo-rec{width:10px;height:10px;border-radius:50%;background:var(--tungsten);box-shadow:0 0 14px var(--tungsten)}
+@keyframes blink{50%{opacity:.25}}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;color:var(--mute)}
+.nav-links a{transition:color .2s;white-space:nowrap}
+.motion .reel .h2{font-size:clamp(30px,4.6vw,72px)}
+.motion .reel-head{margin-bottom:clamp(20px,3vh,44px)}
+.nav-links a:hover{color:var(--paper)}
+.tc{display:flex;align-items:center;gap:8px;color:var(--mute);font-variant-numeric:tabular-nums;padding:8px 12px;border:1px solid var(--line);border-radius:999px}
+.tc b{font-weight:500;color:var(--paper)}
+@media (max-width:1100px){.nav-links{display:none}.tc{margin-left:auto}}
+@media (max-width:520px){.tc{display:none}.nav .btn-sm{margin-left:auto}}
+
+/* hero */
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 40%}
+.hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(12,11,14,.86) 0%,rgba(12,11,14,.55) 45%,rgba(12,11,14,.12) 78%),linear-gradient(0deg,rgba(12,11,14,.85) 0%,transparent 42%)}
+.pl-ico{width:0;height:0;border-left:10px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.hero{position:relative;min-height:max(640px,100svh);display:flex;align-items:flex-end;overflow:hidden;background:radial-gradient(120% 90% at 70% 30%,var(--teal-2),var(--ink) 60%)}
+.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,var(--ink));pointer-events:none}
+.vf{position:absolute;inset:calc(84px + env(safe-area-inset-top,0px)) var(--gr) 26px var(--gl);pointer-events:none;z-index:2;color:rgba(241,235,227,.7)}
+.vf i{position:absolute;width:28px;height:28px;border:0 solid currentColor}
+.vf .tl{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
+.vf .tr{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+.vf .bl{bottom:0;left:0;border-bottom-width:1.5px;border-left-width:1.5px}
+.vf .br{bottom:0;right:0;border-bottom-width:1.5px;border-right-width:1.5px}
+.vf-row{position:absolute;left:44px;right:44px;display:flex;justify-content:space-between;gap:16px}
+.vf-top{top:6px}.vf-bot{bottom:4px}
+.vf .rec{color:var(--tungsten)}
+.vf-cross{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);opacity:.5}
+.vf-cross::before,.vf-cross::after{content:"";position:absolute;background:currentColor}
+.vf-cross::before{left:50%;top:0;bottom:0;width:1px}
+.vf-cross::after{top:50%;left:0;right:0;height:1px}
+.hero-inner{position:relative;z-index:3;width:100%;padding-bottom:clamp(70px,11vh,130px)}
+.hero-title{font:800 clamp(52px,11.5vw,200px)/.9 var(--f-display);letter-spacing:-.05em;margin:0 0 34px;text-wrap:balance}
+.hero-title em{font-style:normal;color:var(--tungsten)}
+.hero-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px 48px}
+.hero-sub{max-width:520px;margin:0;color:rgba(241,235,227,.82);font-size:clamp(16px,1.35vw,19px)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+@media (max-width:640px){.vf-row .hide-sm{display:none}.vf-cross{display:none}}
+
+/* marquee */
+.marquee{border-block:1px solid var(--line);overflow:hidden;padding-block:26px;background:var(--ink)}
+.mq-track{display:flex;width:max-content}
+.mq-track span{font:300 clamp(36px,6vw,92px)/1 var(--f-display);letter-spacing:-.03em;white-space:nowrap;padding-right:.5em;display:flex;align-items:center;gap:.5em}
+.mq-track span::after{content:"";width:.28em;height:.28em;background:var(--tungsten);transform:rotate(45deg)}
+.mq-track span:nth-child(even){-webkit-text-stroke:1px var(--paper);color:transparent}
+
+/* manifesto */
+.manifesto{padding-block:clamp(100px,16vw,220px)}
+.manifesto p{font:500 clamp(26px,3.8vw,58px)/1.18 var(--f-display);letter-spacing:-.03em;margin:0;max-width:1200px;text-wrap:pretty}
+.manifesto .hl{color:var(--tungsten)}
+.manifesto .sign{display:flex;gap:24px;flex-wrap:wrap;margin-top:44px;color:var(--mute)}
+
+/* pipeline */
+.pipe{position:relative;min-height:100svh;display:flex;align-items:center;padding-block:calc(80px + env(safe-area-inset-top,0px)) 40px;background:var(--ink)}
+.pipe-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:center;width:100%}
+.pipe .h2,.devices .h2{font-size:clamp(34px,4.4vw,68px)}
+.pipe-steps{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:4px}
+.pipe-steps li{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:14px 0;border-top:1px solid var(--line);opacity:.38;transition:opacity .4s var(--ease)}
+.pipe-steps li.on{opacity:1}
+.pipe-steps li .mono{color:var(--tungsten);padding-top:4px}
+.pipe-steps b{font:600 18px/1.3 var(--f-display);letter-spacing:-.01em}
+.pipe-steps p{margin:4px 0 0;font-size:15px;color:var(--mute);line-height:1.5}
+.frame{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:6px;overflow:hidden;background:#000;box-shadow:0 40px 120px -30px rgba(255,138,61,.25),0 0 0 1px var(--line)}
+.frame .corner{position:absolute;width:18px;height:18px;border:0 solid rgba(241,235,227,.75);z-index:4}
+.frame .c1{top:12px;left:12px;border-top-width:1.5px;border-left-width:1.5px}
+.frame .c2{top:12px;right:12px;border-top-width:1.5px;border-right-width:1.5px}
+.frame .c3{bottom:12px;left:12px;border-bottom-width:1.5px;border-left-width:1.5px}
+.frame .c4{bottom:12px;right:12px;border-bottom-width:1.5px;border-right-width:1.5px}
+.board{position:absolute;inset:0;width:100%;height:100%;z-index:2;opacity:0}
+.prompt{position:absolute;left:6%;right:6%;bottom:12%;z-index:3;padding:14px 16px;border-radius:10px;background:rgba(12,11,14,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line-2);font:400 clamp(11px,1.1vw,14px)/1.5 var(--f-mono);color:var(--paper);min-height:3.2em}
+.prompt .pl{color:var(--tungsten)}
+.caret{display:inline-block;width:.55em;height:1.1em;background:var(--tungsten);vertical-align:-.2em;margin-left:2px;animation:blink 1s steps(2) infinite}
+.hud{position:absolute;top:18px;left:40px;right:40px;z-index:4;display:flex;justify-content:space-between;color:var(--paper);font-variant-numeric:tabular-nums}
+.hud .st{color:var(--tungsten)}
+.pbar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--tungsten);transform-origin:left;transform:scaleX(0);z-index:4}
+@media (max-width:860px){.pipe-grid{grid-template-columns:1fr}.pipe-frame{order:-1}.pipe-steps{margin-top:18px}.pipe-steps li{padding:9px 0}.pipe-steps p{display:none}.pipe .h2{font-size:clamp(30px,8vw,44px)}.pipe .eyebrow{margin-bottom:12px}}
+
+/* reel */
+.reel{position:relative;background:var(--ink);padding-block:clamp(90px,10vw,140px) 60px;overflow:hidden}
+.reel-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px 60px;margin-bottom:clamp(30px,4vw,56px)}
+.reel-head p.note{max-width:380px;color:var(--mute);margin:0;font-size:15px}
+.track{display:flex;gap:clamp(14px,2vw,28px);padding-left:var(--gl);padding-right:var(--gr);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.motion .reel{height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:calc(70px + env(safe-area-inset-top,0px)) 30px}
+.motion .track{overflow:visible;width:max-content;scroll-snap-type:none}
+.card{--h:min(44vh,460px);flex:none;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px;cursor:none}
+.card[data-r="h"] .media{height:var(--h);aspect-ratio:16/9}
+.card[data-r="v"] .media{height:var(--h);aspect-ratio:9/16}
+.card[data-r="s"] .media{height:var(--h);aspect-ratio:1/1}
+.media{position:relative;max-width:86vw;border-radius:6px;overflow:hidden;background:var(--a);isolation:isolate;transition:transform .6s var(--ease)}
+.card:hover .media{transform:scale(.975)}
+.media i{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
+.media .b1{width:90%;aspect-ratio:1;left:-20%;top:-30%;background:radial-gradient(circle,var(--b) 0,transparent 65%);animation:drift 11s ease-in-out infinite alternate}
+.media .b2{width:80%;aspect-ratio:1;right:-25%;bottom:-35%;background:radial-gradient(circle,var(--c) 0,transparent 65%);animation:drift 14s ease-in-out infinite alternate-reverse}
+.media .b3{width:45%;aspect-ratio:1;left:35%;top:30%;background:radial-gradient(circle,rgba(255,236,210,.55) 0,transparent 60%);animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(12%,8%) scale(1.15)}100%{transform:translate(-6%,14%) scale(.95)}}
+.media::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.35;mix-blend-mode:overlay;z-index:2}
+.media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55));z-index:2}
+.m-top,.m-bot{position:absolute;left:14px;right:14px;z-index:3;display:flex;justify-content:space-between;gap:8px;color:rgba(241,235,227,.9)}
+.m-top{top:12px}.m-bot{bottom:12px}
+.play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;z-index:3;background:rgba(241,235,227,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(241,235,227,.35);display:grid;place-items:center;transition:transform .4s var(--ease),background .3s}
+.play::after{content:"";border-left:14px solid var(--paper);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.card:hover .play{transform:scale(1.15);background:var(--tungsten)}
+.media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.media:has(video)::before{display:none}
+.lb{position:fixed;inset:0;z-index:95;display:grid;place-items:center;background:rgba(8,7,10,.94);padding:calc(56px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb[hidden]{display:none}
+.lb video{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+.lb-x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line-2);background:transparent;color:var(--paper);font:300 26px/1 var(--f-display);cursor:pointer}
+.pipe-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0}
+.card h3{font:600 clamp(17px,1.4vw,21px)/1.25 var(--f-display);letter-spacing:-.02em;margin:0;max-width:30ch}
+.card .kind{color:var(--tungsten-2)}
+.card-cta{justify-content:center;align-items:flex-start}
+.card-cta .media{display:flex;flex-direction:column;justify-content:space-between;padding:28px;background:var(--tungsten);color:var(--ink)}
+.card-cta .media::before,.card-cta .media::after{display:none}
+.card-cta strong{font:800 clamp(30px,3.4vw,52px)/1 var(--f-display);letter-spacing:-.04em}
+.reel-progress{margin-top:34px;height:1px;background:var(--line);position:relative}
+.reel-progress b{position:absolute;inset:0;background:var(--tungsten);transform-origin:left;transform:scaleX(0)}
+
+/* light "paper" bands: local token flip so every child adapts */
+.light{--paper:#17141B;--mute:#6B6370;--line:rgba(23,20,27,.12);--line-2:rgba(23,20,27,.24);--tungsten:#E0601C;--tungsten-2:#C4561C;--ink:#EFE8DE;background:var(--ink);color:var(--paper)}
+.panel{position:relative;z-index:1}
+
+/* services */
+.services{padding-block:clamp(100px,12vw,180px)}
+.svc-list{margin-top:clamp(40px,5vw,70px);border-bottom:1px solid var(--line)}
+.svc{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:20px 48px;align-items:start;padding:clamp(28px,3.4vw,48px) 0;border-top:1px solid var(--line);isolation:isolate}
+.svc::before{content:"";position:absolute;inset:0 calc(-1 * var(--gl));background:linear-gradient(90deg,rgba(255,138,61,.13),transparent 70%);opacity:0;transition:opacity .5s var(--ease);z-index:-1}
+.svc:hover::before{opacity:1}
+.svc h3{font:700 clamp(28px,3.6vw,56px)/1.02 var(--f-display);letter-spacing:-.035em;margin:0;transition:transform .5s var(--ease)}
+.svc:hover h3{transform:translateX(12px)}
+.svc .badge{display:inline-block;margin-top:14px;padding:6px 10px;border-radius:999px;background:var(--tungsten);color:var(--ink)}
+.svc p{margin:0 0 16px;color:rgba(241,235,227,.8)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.tags li{padding:7px 12px;border:1px solid var(--line-2);border-radius:999px;font-size:13px;color:var(--mute)}
+.svc .term{text-align:right;color:var(--mute);white-space:nowrap}
+.svc .term b{display:block;font:500 22px/1.2 var(--f-display);color:var(--paper);letter-spacing:-.02em;margin-top:6px;text-transform:none}
+.svc.main h3{font-size:clamp(34px,4.6vw,72px)}
+@media (max-width:860px){.svc{grid-template-columns:1fr}.svc .term{text-align:left}}
+
+/* devices */
+.devices{position:relative;min-height:100svh;display:flex;align-items:center;padding-block:calc(80px + env(safe-area-inset-top,0px)) 40px;background:radial-gradient(80% 70% at 75% 55%,rgba(47,183,174,.16),transparent 70%),var(--ink-2);overflow:hidden}
+.dev-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:center;width:100%}
+.dev-copy{display:grid;gap:26px;margin-top:30px}
+.dev-copy h3{font:600 22px/1.25 var(--f-display);margin:0 0 6px;letter-spacing:-.02em}
+.dev-copy h3 span{color:var(--tungsten);margin-right:10px}
+.dev-copy p{margin:0;color:var(--mute);font-size:15px}
+.motion .dev-copy{display:block;position:relative;min-height:150px}
+.motion .dev-copy > div{position:absolute;inset:0 0 auto}
+.stage{position:relative;perspective:1400px;padding-bottom:40px}
+.browser{position:relative;border-radius:12px;overflow:hidden;background:#F6F1EA;color:#1A1714;box-shadow:0 60px 120px -40px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08);transform-origin:50% 100%}
+.b-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#E9E2D8}
+.b-bar i{width:10px;height:10px;border-radius:50%;background:#D3C9BC}
+.b-url{margin-left:12px;flex:1;max-width:260px;padding:5px 12px;border-radius:999px;background:#F6F1EA;font:500 11px/1 var(--f-mono);color:#6F665D;text-transform:none;letter-spacing:0}
+.site{padding:clamp(14px,2.2vw,28px);display:grid;gap:clamp(10px,1.4vw,18px)}
+.site-nav{display:flex;justify-content:space-between;align-items:center;font:700 clamp(10px,1vw,13px)/1 var(--f-display)}
+.site-nav span{display:flex;gap:14px;font:500 clamp(9px,.85vw,11px)/1 var(--f-body);color:#6F665D}
+.site-hero{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(10px,1.6vw,20px);align-items:center}
+.site-hero h4{font:800 clamp(16px,2.4vw,34px)/1 var(--f-display);letter-spacing:-.04em;margin:0}
+.site-hero h4 em{font-style:normal;color:#D9631E}
+.site-hero small{display:block;margin-top:10px;font-size:clamp(9px,.85vw,11px);color:#6F665D}
+.site-btn{display:inline-block;margin-top:12px;padding:7px 12px;border-radius:999px;background:#1A1714;color:#F6F1EA;font:600 clamp(8px,.8vw,10px)/1 var(--f-body)}
+.site-vid{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;--a:#2A1A12;--b:#FF8A3D;--c:#2FB7AE;background:var(--a)}
+.site-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1vw,12px)}
+.site-cards div{border-radius:6px;background:#EAE2D7;padding:clamp(6px,1vw,12px);font:600 clamp(8px,.8vw,11px)/1.3 var(--f-body)}
+.site-cards div::before{content:"";display:block;aspect-ratio:16/10;border-radius:4px;margin-bottom:6px;background:linear-gradient(135deg,#D9A27B,#7A4A2E)}
+.site-cards div:nth-child(2)::before{background:linear-gradient(135deg,#9FD3CC,#2F6F6A)}
+.site-cards div:nth-child(3)::before{background:linear-gradient(135deg,#F2C48E,#C2571D)}
+.phone{position:absolute;right:-2%;bottom:0;width:clamp(150px,19vw,250px);aspect-ratio:9/19.5;border-radius:clamp(26px,3vw,40px);background:#0A0A0C;padding:clamp(6px,.7vw,9px);box-shadow:0 50px 100px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.12),inset 0 0 0 2px #2A282E;transform-style:preserve-3d}
+.phone-in{position:relative;height:100%;border-radius:clamp(20px,2.4vw,32px);overflow:hidden;background:#141215}
+.island{position:absolute;top:8px;left:50%;width:32%;height:clamp(14px,1.6vw,22px);transform:translateX(-50%);background:#000;border-radius:999px;z-index:5}
+.scr{position:absolute;inset:0;padding:clamp(28px,3.4vw,46px) clamp(10px,1.1vw,14px) 12px;display:flex;flex-direction:column;gap:clamp(6px,.8vw,10px);font-size:clamp(8px,.8vw,11px);line-height:1.35}
+.scr h5{margin:0;font:700 clamp(12px,1.3vw,17px)/1.1 var(--f-display);letter-spacing:-.02em}
+.scr .row{display:flex;justify-content:space-between;align-items:center;padding:clamp(6px,.8vw,10px);border-radius:10px;background:#1F1C21}
+.scr .row b{color:var(--tungsten-2);font-weight:600}
+.scr .hero-tile{border-radius:12px;padding:12px;min-height:30%;display:flex;align-items:flex-end;font-weight:600;background:linear-gradient(150deg,#FF8A3D,#7A2E12 60%,#0F4F55)}
+.ring{width:58%;aspect-ratio:1;margin:8px auto;border-radius:50%;background:conic-gradient(var(--tungsten) 0 68%,#2A272D 0);display:grid;place-items:center}
+.ring span{width:84%;aspect-ratio:1;border-radius:50%;background:#141215;display:grid;place-items:center;text-align:center;font:700 clamp(12px,1.4vw,18px)/1.1 var(--f-display)}
+.ring small{display:block;font:400 clamp(7px,.7vw,9px)/1.2 var(--f-body);color:var(--mute)}
+.scr-3{padding:0;background:#000}
+.scr-3 .site-vid{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
+.scr-3 .cap{position:absolute;left:12px;right:12px;bottom:18px;z-index:4}
+.scr-3 .bars{position:absolute;top:30px;left:10px;right:10px;display:flex;gap:4px;z-index:4}
+.scr-3 .bars i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.35)}
+.scr-3 .bars i:first-child{background:#fff}
+.motion .scr-2,.motion .scr-3{opacity:0}
+@media (max-width:860px){.dev-grid{grid-template-columns:1fr}.motion .dev-copy{min-height:120px}.dev-copy{margin-top:18px}.devices .h2{font-size:clamp(30px,8vw,44px)}.phone{right:-4px;width:34%}.stage{padding-bottom:24px;margin-right:12%}}
+
+/* portfolio */
+.b-shot{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.scr:has(img){padding:0}
+.scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.pfs{padding-block:clamp(100px,12vw,180px);background:var(--ink)}
+.pf-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px 60px;margin-bottom:clamp(36px,4vw,60px)}
+.pf-head .note{max-width:380px;color:var(--mute);margin:0;font-size:15px}
+.pf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.pf{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pf-shot{border-radius:10px;overflow:hidden;background:var(--ink-3);box-shadow:0 0 0 1px var(--line);transition:transform .6s var(--ease),box-shadow .4s}
+.pf-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--ink-3);border-bottom:1px solid var(--line)}
+.pf-bar i{width:8px;height:8px;border-radius:50%;background:var(--line-2)}
+.pf-bar span{margin-left:8px;font:500 11px/1 var(--f-mono);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pf-shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}
+.pf:hover .pf-shot{transform:translateY(-6px);box-shadow:0 0 0 1px var(--tungsten),0 30px 60px -30px rgba(255,138,61,.4)}
+.pf:hover .pf-shot img{transform:scale(1.04)}
+.pf-meta .mono{color:var(--tungsten-2)}
+.pf-meta h3{font:600 clamp(17px,1.4vw,20px)/1.25 var(--f-display);letter-spacing:-.02em;margin:6px 0 0}
+.pf-meta p{margin:8px 0 0;color:var(--mute);font-size:15px;max-width:46ch}
+.pf-app{grid-column:span 2;flex-direction:row;align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(20px,3vw,40px);border-radius:10px;background:radial-gradient(80% 90% at 20% 30%,rgba(47,183,174,.18),transparent 70%),var(--ink-2);box-shadow:0 0 0 1px var(--line)}
+.pf-phones{display:flex;gap:10px;flex:0 0 auto}
+.pf-phones img{width:clamp(80px,9vw,140px);aspect-ratio:1080/2340;object-fit:cover;object-position:top;border-radius:14px;box-shadow:0 0 0 4px #0A0A0C,0 20px 40px -20px rgba(0,0,0,.8)}
+.pf-phones img:nth-child(2){transform:translateY(-14px)}
+.pf-gh{justify-content:center;padding:clamp(24px,3vw,40px);border-radius:10px;background:var(--tungsten);color:var(--ink);transition:transform .5s var(--ease)}
+.pf-gh strong{font:800 clamp(56px,6vw,96px)/.9 var(--f-display);letter-spacing:-.05em}
+.pf-gh span{font:500 17px/1.35 var(--f-body);max-width:24ch}
+.pf-gh i{font:300 40px/1 var(--f-display);font-style:normal;transition:transform .5s var(--ease)}
+.pf-gh:hover i{transform:translateX(10px) rotate(-45deg)}
+@media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.pf-grid{grid-template-columns:1fr}.pf-app{grid-column:auto;flex-direction:column;align-items:flex-start}}
+
+/* why */
+.why{padding-block:clamp(100px,12vw,180px)}
+.vs{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.vs > div{padding:clamp(22px,3vw,40px)}
+.vs .old{color:var(--mute)}
+.vs .new{background:linear-gradient(160deg,rgba(255,138,61,.14),rgba(47,183,174,.06));border-left:1px solid var(--line)}
+.vs h3{margin:0 0 22px}
+.vs h3.mono{font-size:12px}
+.vs .new h3{color:var(--tungsten)}
+.vs ul{list-style:none;margin:0;padding:0;display:grid}
+.vs li{padding:16px 0;border-top:1px solid var(--line);font-size:clamp(15px,1.3vw,18px)}
+.vs .old li{text-decoration:line-through;text-decoration-color:rgba(156,149,160,.5)}
+.vs .new li{color:var(--paper)}
+.vs .new li::before{content:"";display:inline-block;width:7px;height:7px;background:var(--tungsten);transform:rotate(45deg);margin-right:12px;vertical-align:2px}
+@media (max-width:700px){.vs{grid-template-columns:1fr}.vs .new{border-left:0;border-top:1px solid var(--line)}}
+
+/* process timeline */
+.process{padding-block:clamp(80px,10vw,150px);background:var(--ink-2)}
+.nle{margin-top:clamp(40px,5vw,64px);border:1px solid var(--line);border-radius:6px;background:var(--ink);padding:16px 16px 20px;position:relative}
+.nle-head{display:flex;justify-content:space-between;align-items:center;color:var(--mute);margin-bottom:12px;font-variant-numeric:tabular-nums}
+.nle-head b{color:var(--tungsten);font-weight:500}
+.lanes{position:relative;display:grid;grid-template-columns:34px 1fr;gap:6px 10px;align-items:center}
+.lanes .lb{color:var(--mute);font-size:11px}
+.ruler{height:18px;background:repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px 2.5%);mask:linear-gradient(#000 0 45%,transparent 0);-webkit-mask:linear-gradient(#000 0 45%,transparent 0)}
+.clips{display:flex;gap:4px;height:58px}
+.clip{flex:var(--f) 1 0;min-width:0;border-radius:4px;padding:9px 10px;background:var(--ink-3);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:background .35s var(--ease),border-color .35s,color .35s}
+.clip b{font:600 13px/1.1 var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip .mono{font-size:10px;color:var(--mute);white-space:nowrap}
+.clip.on{background:var(--tungsten);border-color:var(--tungsten);color:var(--ink)}
+.clip.on .mono{color:rgba(12,11,14,.7)}
+.wave{height:38px;display:flex;align-items:center;gap:2px;overflow:hidden}
+.wave i{flex:1;min-width:1px;background:var(--teal);opacity:.55;border-radius:1px}
+.keys{height:16px;position:relative}
+.keys i{position:absolute;top:3px;width:9px;height:9px;margin-left:-4.5px;background:var(--tungsten-2);transform:rotate(45deg)}
+.playhead{position:absolute;top:-6px;bottom:-6px;left:0;width:2px;background:var(--paper);pointer-events:none;z-index:3}
+.playhead::before{content:"";position:absolute;top:0;left:-6px;border:7px solid transparent;border-top:9px solid var(--paper);border-bottom:0}
+.ph-area{position:absolute;top:0;bottom:0;left:44px;right:0;pointer-events:none}
+.steps5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin-top:40px}
+.steps5 div{border-top:1px solid var(--line);padding-top:18px;transition:border-color .4s}
+.steps5 div.on{border-color:var(--tungsten)}
+.steps5 .mono{color:var(--tungsten)}
+.steps5 h3{font:600 19px/1.2 var(--f-display);margin:10px 0 8px;letter-spacing:-.02em}
+.steps5 p{margin:0;font-size:15px;color:var(--mute)}
+@media (max-width:900px){.steps5{grid-template-columns:repeat(2,minmax(0,1fr))}.clip .mono{display:none}.clip{padding:8px 6px}.clip b{font-size:11px}}
+@media (max-width:480px){.steps5{grid-template-columns:1fr}}
+
+/* faq */
+.faq{padding-block:clamp(90px,10vw,150px)}
+.faq-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:40px}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:24px 0;font:500 clamp(17px,1.5vw,21px)/1.3 var(--f-display);letter-spacing:-.02em}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:300 28px/1 var(--f-display);color:var(--tungsten);transition:transform .35s var(--ease)}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 24px;color:var(--mute);max-width:62ch}
+@media (max-width:860px){.faq-grid{grid-template-columns:1fr}}
+
+/* contact */
+.contact{position:relative;padding-block:clamp(100px,12vw,180px) 60px;overflow:hidden;background:radial-gradient(70% 60% at 85% 0%,rgba(255,138,61,.22),transparent 70%),var(--ink)}
+.contact-title{font:800 clamp(46px,9vw,150px)/.92 var(--f-display);letter-spacing:-.05em;margin:0 0 clamp(40px,5vw,70px);text-wrap:balance}
+.contact-title em{font-style:normal;color:var(--tungsten)}
+.contact-lead{max-width:560px;color:rgba(241,235,227,.8);font-size:clamp(17px,1.4vw,20px);margin:0 0 clamp(36px,4vw,56px)}
+.contacts{border-bottom:1px solid var(--line)}
+.ct{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr) auto;align-items:center;gap:8px 24px;padding-block:clamp(20px,2.6vw,34px);border-top:1px solid var(--line);isolation:isolate}
+.ct::before{content:"";position:absolute;inset:0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl));background:var(--tungsten);transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease);z-index:-1}
+.ct:hover::before,.ct:focus-visible::before{transform:none}
+.ct span{color:var(--mute);transition:color .3s}
+.ct b{font:700 clamp(24px,4.2vw,62px)/1.05 var(--f-display);letter-spacing:-.035em;overflow-wrap:anywhere;transition:transform .5s var(--ease),color .3s}
+.ct i{font:300 clamp(24px,3vw,44px)/1 var(--f-display);font-style:normal;transition:transform .5s var(--ease),color .3s}
+.ct:hover b{transform:translateX(14px)}
+.ct:hover b,.ct:hover span,.ct:hover i{color:var(--ink)}
+.ct:hover i{transform:rotate(-45deg)}
+@media (max-width:640px){.ct{grid-template-columns:minmax(0,1fr) auto}.ct span{grid-column:1/-1}}
+footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);overflow:hidden}
+.wordmark{font:800 clamp(80px,24vw,400px)/.8 var(--f-display);letter-spacing:-.07em;margin:0 0 30px;color:transparent;-webkit-text-stroke:1px var(--line-2);white-space:nowrap}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;color:var(--mute)}
+
+/* cursor */
+.cursor,.cursor-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:100;border-radius:50%;display:none}
+.cursor{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--tungsten)}
+.cursor-ring{width:40px;height:40px;margin:-20px 0 0 -20px;border:1px solid rgba(255,138,61,.75);display:none;place-items:center;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background .35s,border-color .35s}
+.cursor-ring span{font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);opacity:0;transition:opacity .2s}
+.cursor-ring.link{width:64px;height:64px;margin:-32px 0 0 -32px;border-color:var(--tungsten)}
+.cursor-ring.view{width:96px;height:96px;margin:-48px 0 0 -48px;background:var(--tungsten);border-color:var(--tungsten)}
+.cursor-ring.view span{opacity:1}
+@media (hover:hover) and (pointer:fine){.has-cursor .cursor{display:block}.has-cursor .cursor-ring{display:grid}}
+.card{cursor:pointer}.has-cursor .card{cursor:none}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230C0B0E'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23FF8A3D'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KADR Studio — моушн-дизайн на нейросетях">
+<meta property="og:description" content="Рекламные ролики, Reels и анимация на ИИ. Сайты и мобильные приложения под ключ.">
+<meta name="theme-color" content="#0C0B0E">
+</head>
+<body>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span>Смотреть</span></div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-label="Просмотр ролика"><button class="lb-x" id="lbx" aria-label="Закрыть">×</button><video id="lbv" controls playsinline loop></video></div>
+
+<header class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="KADR Studio, наверх"><span class="logo-rec"></span>KADR<sup>studio</sup></a>
+  <nav class="nav-links" aria-label="Разделы">
+    <a href="#reel">Работы</a><a href="#services">Услуги</a><a href="#portfolio">Сайты и приложения</a><a href="#process">Процесс</a><a href="#faq">Вопросы</a>
+  </nav>
+  <div class="tc mono" title="Таймкод страницы"><span>TC</span><b id="tc">00:00:00:00</b></div>
+  <a class="btn btn-sm magnetic" href="#contact">Обсудить проект</a>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="top">
+  <video class="hero-vid" id="heroVid" src="video/showreel-wide.mp4" poster="video/showreel-wide.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="vf mono" aria-hidden="true">
+    <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+    <div class="vf-row vf-top"><span>Шоурил 2026</span><span id="heroTc">00:00:00</span></div>
+    <div class="vf-row vf-bot"><span>Каждый кадр создан нейросетями</span></div>
+  </div>
+  <div class="hero-inner wrap">
+    <p class="eyebrow mono">Премиальный моушн-дизайн на нейросетях</p>
+    <h1 class="hero-title" data-split>Кино <br><em>без камеры.</em></h1>
+    <div class="hero-row">
+      <p class="hero-sub" data-fade>Рекламные ролики, моушн-дизайн и презентации недвижимости уровня большого продакшна. Без съёмочной группы, локаций и пересъёмок. А ещё сайты и приложения, в которых это видео продаёт.</p>
+      <div class="hero-cta" data-fade>
+        <a class="btn magnetic" href="#contact">Обсудить проект <span class="arr">→</span></a>
+        <button class="btn btn-ghost magnetic" type="button" data-video="video/showreel-wide.mp4"><span class="pl-ico" aria-hidden="true"></span>Смотреть шоурил</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REEL -->
+<section class="reel" id="reel">
+  <div class="wrap reel-head">
+    <div>
+      <p class="eyebrow mono">Избранное</p>
+      <h2 class="h2">Лучшие<br><em>работы</em></h2>
+    </div>
+    <p class="note">Реальные работы: моушн-дизайн, реклама, недвижимость, персонажи и кино. Всё сгенерировано нейросетями и смонтировано у нас. Нажмите на ролик, чтобы посмотреть крупно.</p>
+  </div>
+  <div class="track" id="track">
+    <article class="card" tabindex="0" data-r="h" data-video="video/tennis.mp4">
+      <div class="media"><video src="video/tennis.mp4" poster="video/tennis.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:10</span></div>
+        <div class="m-bot mono"><span>Бьюти-реклама</span><span>AI</span></div></div>
+      <span class="kind mono">Бьюти-реклама</span><h3>Маска с коллагеном: от утра в ванной до победы на корте</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/project-v-story.mp4">
+      <div class="media"><video src="video/project-v-story.mp4" poster="video/project-v-story.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:11</span></div>
+        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
+      <span class="kind mono">Реклама</span><h3>Рекламный ролик Project V: целая история за 11 секунд</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/bella-peel.mp4">
+      <div class="media"><video src="video/bella-peel.mp4" poster="video/bella-peel.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:15</span></div>
+        <div class="m-bot mono"><span>Моушн-дизайн</span><span>AI</span></div></div>
+      <span class="kind mono">Моушн-дизайн</span><h3>Bella Peel: молекулы, жидкость и свет для косметического бренда</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/triumph.mp4">
+      <div class="media"><video src="video/triumph.mp4" poster="video/triumph.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:17</span></div>
+        <div class="m-bot mono"><span>Презентация девелопера</span><span>AI</span></div></div>
+      <span class="kind mono">Презентация девелопера</span><h3>ЖК «Триумф-Палас»: коммерческие лоты с картой и планировками</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/chocolate.mp4">
+      <div class="media"><video src="video/chocolate.mp4" poster="video/chocolate.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
+        <div class="m-bot mono"><span>Анимация персонажей</span><span>AI</span></div></div>
+      <span class="kind mono">Анимация персонажей</span><h3>Сказка для шоколадного бренда в стиле анимационного кино</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/clg.mp4">
+      <div class="media"><video src="video/clg.mp4" poster="video/clg.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:14</span></div>
+        <div class="m-bot mono"><span>Бьюти-реклама</span><span>AI</span></div></div>
+      <span class="kind mono">Бьюти-реклама</span><h3>CLG: коллаген от молекулы до подиума</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/villa-dubai.mp4">
+      <div class="media"><video src="video/villa-dubai.mp4" poster="video/villa-dubai.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:06</span></div>
+        <div class="m-bot mono"><span>Недвижимость</span><span>AI</span></div></div>
+      <span class="kind mono">Недвижимость</span><h3>Вилла в Дубае: от бассейна до гостиной с видом на Бурдж-Халифу</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/villa-arches.mp4">
+      <div class="media"><video src="video/villa-arches.mp4" poster="video/villa-arches.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:06</span></div>
+        <div class="m-bot mono"><span>Архитектура</span><span>AI</span></div></div>
+      <span class="kind mono">Архитектура</span><h3>Пролёт сквозь арки виллы на закате</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/bella-device.mp4">
+      <div class="media"><video src="video/bella-device.mp4" poster="video/bella-device.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:10</span></div>
+        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
+      <span class="kind mono">Реклама</span><h3>Bella: косметологический аппарат, который дарят в ресторане</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/project-v-ad.mp4">
+      <div class="media"><video src="video/project-v-ad.mp4" poster="video/project-v-ad.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:10</span></div>
+        <div class="m-bot mono"><span>Продуктовая реклама</span><span>AI</span></div></div>
+      <span class="kind mono">Продуктовая реклама</span><h3>Путешествие внутрь организма для бренда витаминов</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/fantasy.mp4">
+      <div class="media"><video src="video/fantasy.mp4" poster="video/fantasy.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:11</span></div>
+        <div class="m-bot mono"><span>Кино и клипы</span><span>AI</span></div></div>
+      <span class="kind mono">Кино и клипы</span><h3>Светящийся лес и цитадель над облаками</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/timelapse.mp4">
+      <div class="media"><video src="video/timelapse.mp4" poster="video/timelapse.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:07</span></div>
+        <div class="m-bot mono"><span>Девелопмент</span><span>AI</span></div></div>
+      <span class="kind mono">Девелопмент</span><h3>От пустого участка до готового квартала за 7 секунд</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/fairy.mp4">
+      <div class="media"><video src="video/fairy.mp4" poster="video/fairy.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
+        <div class="m-bot mono"><span>Персонажи</span><span>AI</span></div></div>
+      <span class="kind mono">Персонажи</span><h3>Персонаж из воды для детского бренда</h3>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/manor.mp4">
+      <div class="media"><video src="video/manor.mp4" poster="video/manor.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:14</span></div>
+        <div class="m-bot mono"><span>Историческое кино</span><span>AI</span></div></div>
+      <span class="kind mono">Историческое кино</span><h3>Усадьба: от пустого поля до дворца за 14 секунд</h3>
+    </article>
+    <a class="card card-cta" data-r="v" href="#contact">
+      <div class="media"><span class="mono">Следующий ролик</span><strong>Ваш<br>кадр<br>здесь →</strong></div>
+      <span class="kind mono">Напишите нам</span><h3>Обсудить ролик</h3>
+    </a>
+  </div>
+  <div class="wrap"><div class="reel-progress"><b id="reelBar"></b></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track" id="mq">
+    <span>Моушн на ИИ</span><span>Рекламные ролики</span><span>Reels и Shorts</span><span>3D-анимация</span><span>Сайты</span><span>iOS и Android</span>
+    <span>Моушн на ИИ</span><span>Рекламные ролики</span><span>Reels и Shorts</span><span>3D-анимация</span><span>Сайты</span><span>iOS и Android</span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto wrap">
+  <p class="eyebrow mono">Что мы делаем</p>
+  <p data-words>Мы делаем кадры, которые <span class="hl">невозможно снять.</span> Камера пролетает сквозь витрину, продукт собирается из света, персонаж говорит на пяти языках. Нейросеть генерирует, режиссёр отвечает за смысл, ритм и вкус.</p>
+  <div class="sign mono"><span>Режиссура</span><span>Генерация</span><span>Монтаж</span><span>Цвет</span><span>Звук</span></div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipe" id="pipeline">
+  <div class="wrap pipe-grid">
+    <div>
+      <p class="eyebrow mono">Пайплайн</p>
+      <h2 class="h2">Как рождается <em>кадр</em></h2>
+      <ol class="pipe-steps">
+        <li class="on"><span class="mono">01</span><div><b>Промпт</b><p>Переводим задачу на язык нейросети: свет, оптика, движение камеры.</p></div></li>
+        <li><span class="mono">02</span><div><b>Раскадровка</b><p>Собираем композицию и ритм до генерации, чтобы не гадать.</p></div></li>
+        <li><span class="mono">03</span><div><b>Генерация</b><p>Десятки вариантов каждого плана. Оставляем лучший дубль.</p></div></li>
+        <li><span class="mono">04</span><div><b>Монтаж и цвет</b><p>Склейка, саунд-дизайн, цветокор и титры. Готово к публикации.</p></div></li>
+      </ol>
+    </div>
+    <div class="pipe-frame">
+      <div class="frame">
+        <canvas class="gl" id="pipeGL" aria-hidden="true"></canvas>
+        <video class="pipe-vid" id="pipeVid" src="video/daynight.mp4" poster="video/daynight.jpg" muted loop playsinline preload="metadata"></video>
+        <svg class="board" id="board" viewBox="0 0 160 90" fill="none" stroke="#FFB878" stroke-width=".35" aria-hidden="true">
+          <path d="M53.3 0v90M106.7 0v90M0 30h160M0 60h160" stroke-dasharray="1.5 1.5" opacity=".7"/>
+          <path d="M0 58 C30 52 50 62 80 56 S130 50 160 55" />
+          <rect x="62" y="28" width="36" height="30" rx="1"/>
+          <path d="M66 52 l10-12 8 9 6-6 6 9" />
+          <path d="M20 78 h34" stroke-width=".6"/><path d="M50 75 l5 3 -5 3" stroke-width=".6"/>
+          <text x="20" y="74" fill="#FFB878" stroke="none" font-size="3.4" font-family="monospace">CAM: DOLLY-IN</text>
+          <text x="112" y="10" fill="#FFB878" stroke="none" font-size="3.4" font-family="monospace">ПЛАН 03 · 4 СЕК</text>
+        </svg>
+        <div class="prompt" id="promptBox"><span class="pl">/imagine</span> <span id="promptText"></span><span class="caret"></span></div>
+        <div class="hud mono"><span class="st" id="pipeStage">PROMPT</span><span id="pipePct">000%</span></div>
+        <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+        <div class="pbar" id="pbar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services light panel" id="services"><div class="wrap">
+  <p class="eyebrow mono">Услуги</p>
+  <h2 class="h2" data-reveal>Три направления.<br><em>Одна команда.</em></h2>
+  <div class="svc-list">
+    <article class="svc main" data-reveal>
+      <div><h3><span style="white-space:nowrap">Моушн-дизайн</span> на нейросетях</h3><span class="badge mono">Основное направление</span></div>
+      <div><p>Анимированные ролики для рекламы, соцсетей, презентаций и сайтов. Генерируем сцены, персонажей, голос и музыку, монтируем и красим как в кино.</p>
+        <ul class="tags"><li>Рекламные ролики</li><li>Reels и Shorts</li><li>Анимация логотипа</li><li>3D-продукт</li><li>ИИ-аватары</li><li>Клипы</li></ul></div>
+      <div class="term mono">Срок<b>от 3 дней</b></div>
+    </article>
+    <article class="svc" data-reveal>
+      <div><h3>Сайты</h3></div>
+      <div><p>Лендинги, корпоративные сайты, интернет-магазины и веб-сервисы с живой анимацией, как на этой странице. Адаптив, SEO-база, заявки в Telegram или CRM.</p>
+        <ul class="tags"><li>Лендинг</li><li>Корпоративный сайт</li><li>Интернет-магазин</li><li>Веб-приложение</li></ul></div>
+      <div class="term mono">Срок<b>от 7 дней</b></div>
+    </article>
+    <article class="svc" data-reveal>
+      <div><h3>Мобильные приложения</h3></div>
+      <div><p>iOS и Android от прототипа до публикации в App Store и Google Play. Каталоги, запись, доставка, личные кабинеты, оплата и push-уведомления.</p>
+        <ul class="tags"><li>iOS</li><li>Android</li><li>UX/UI-дизайн</li><li>Публикация в сторах</li></ul></div>
+      <div class="term mono">Срок<b>от 4 недель</b></div>
+    </article>
+  </div>
+</div></section>
+
+<!-- DEVICES -->
+<section class="devices panel" id="apps">
+  <div class="wrap dev-grid">
+    <div>
+      <p class="eyebrow mono">Сайты и приложения</p>
+      <h2 class="h2">Сайты<br><em>и приложения</em></h2>
+      <div class="dev-copy" id="devCopy">
+        <div><h3><span>◆</span>Сайты, которые продают</h3><p>Лендинги для риелторов, девелоперов и экспертов: видео, анимация, заявки сразу в Telegram или CRM.</p></div>
+        <div><h3><span>◆</span>Приложения в сторах</h3><p>Remind me: голосовой календарь для Android, опубликован в RuStore. Скажите фразу, и дела разложатся сами.</p></div>
+        <div><h3><span>◆</span>Игры, боты и сервисы</h3><p>Веб-игры, Telegram-боты, ERP и PWA. Больше 140 проектов в открытом доступе на GitHub.</p></div>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="browser" id="browser">
+        <div class="b-bar"><i></i><i></i><i></i><span class="b-url">vs-pro-m2.ru</span></div>
+        <img class="b-shot" src="work/vspro.jpg" alt="Сайт риелтора vs-pro-m2.ru" loading="lazy">
+      </div>
+      <div class="phone" id="phone">
+        <div class="phone-in"><span class="island"></span>
+          <div class="scr scr-1"><img src="work/remindme-4-phrase.jpg" alt="Remind me: фраза голосом" loading="lazy"></div>
+          <div class="scr scr-2"><img src="work/remindme-1-today.jpg" alt="Remind me: дела на сегодня" loading="lazy"></div>
+          <div class="scr scr-3"><img src="work/remindme-7-answer.jpg" alt="Remind me: ответ голосом" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="pfs panel" id="portfolio">
+  <div class="wrap">
+    <div class="pf-head">
+      <div><p class="eyebrow mono">Портфолио</p><h2 class="h2">Сайты, сервисы<br><em>и игры</em></h2></div>
+      <p class="note">Живые проекты: откройте любой и посмотрите, как он работает.</p>
+    </div>
+    <div class="pf-grid">
+      <div class="pf pf-app">
+        <div class="pf-phones"><img src="work/remindme-4-phrase.jpg" alt="" loading="lazy"><img src="work/remindme-1-today.jpg" alt="" loading="lazy"><img src="work/remindme-7-answer.jpg" alt="" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Android · RuStore</span><h3>Remind me: голосовой календарь</h3><p>Нажали кнопку, сказали «завтра в 9 позвонить маме», и дело уже в календаре. Работает без интернета.</p></div>
+      </div>
+      <a class="pf" href="https://vs-pro-m2.ru/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>vs-pro-m2.ru</span></div><img src="work/vspro.jpg" alt="Премиум-сайт риелтора" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Лендинг</span><h3>Премиум-сайт риелтора</h3></div>
+      </a>
+      <a class="pf" href="https://xn----7sbb4aakevtdis.xn--p1ai/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>ракитин-парк.рф</span></div><img src="work/xn.jpg" alt="Ракитин Парк: загородные кварталы в Новой Москве" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Девелопер</span><h3>Ракитин Парк: загородные кварталы в Новой Москве</h3></div>
+      </a>
+      <a class="pf" href="https://goshva.github.io/archai/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>ArchAI</span></div><img src="work/archai.jpg" alt="Видео будущего интерьера из фото бетонной коробки" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">AI-сервис</span><h3>Видео будущего интерьера из фото бетонной коробки</h3></div>
+      </a>
+      <a class="pf" href="https://vozrozhdenie-life.ru/teaser.html" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>vozrozhdenie-life.ru</span></div><img src="work/vozr.jpg" alt="Тизер проекта у реки Воронеж" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Девелопмент</span><h3>Тизер проекта у реки Воронеж</h3></div>
+      </a>
+      <a class="pf" href="https://fertika.com/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>fertika.com</span></div><img src="work/fertika.jpg" alt="Fertika: удобрения для дома и сада" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Интернет-магазин</span><h3>Fertika: удобрения для дома и сада</h3></div>
+      </a>
+      <a class="pf" href="https://davydovserg.github.io/Veronika/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Вероника Басырова</span></div><img src="work/veronika.jpg" alt="Сайт врача-эксперта с записью на консультацию" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Личный бренд</span><h3>Сайт врача-эксперта с записью на консультацию</h3></div>
+      </a>
+      <a class="pf" href="https://davydovserg.github.io/IT-PRO/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>IT-PRO</span></div><img src="work/itpro.jpg" alt="Проверка реального уровня программиста" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">HR-сервис</span><h3>Проверка реального уровня программиста</h3></div>
+      </a>
+      <a class="pf" href="https://goshva.github.io/earplug/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Earplug</span></div><img src="work/earplug.jpg" alt="Глушим рекламу по звуку и превращаем отпечатки в актив" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">SaaS</span><h3>Глушим рекламу по звуку и превращаем отпечатки в актив</h3></div>
+      </a>
+      <a class="pf" href="https://goshva.github.io/newsgame/games/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>NewsGame</span></div><img src="work/newsgame.jpg" alt="10 игр к новостям пяти регионов" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Игры</span><h3>10 игр к новостям пяти регионов</h3></div>
+      </a>
+      <a class="pf" href="https://goshva.github.io/storm_drains/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Ливнёвка</span></div><img src="work/storm.jpg" alt="Пульт диспетчера ливнёвой системы города" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Мобильный интерфейс</span><h3>Пульт диспетчера ливнёвой системы города</h3></div>
+      </a>
+      <a class="pf" href="https://goshva.github.io/bombermen/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Bomberman</span></div><img src="work/bomber.jpg" alt="Ремейк классики прямо в браузере" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">WebGL-игра</span><h3>Ремейк классики прямо в браузере</h3></div>
+      </a>
+      <a class="pf pf-gh" href="https://github.com/goshva?tab=repositories" target="_blank" rel="noopener">
+        <strong>140+</strong><span>проектов на GitHub: сайты, боты, ERP, PWA и игры</span><i>→</i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why light panel" id="why"><div class="wrap">
+  <p class="eyebrow mono">Почему ИИ</p>
+  <h2 class="h2" data-reveal>Бюджет уходит в идею,<br><em>а не в логистику</em></h2>
+  <div class="vs" data-reveal>
+    <div class="old"><h3 class="mono">Классический продакшн</h3>
+      <ul><li>Съёмочная группа, свет, оператор</li><li>Аренда локаций и реквизита</li><li>Недели подготовки к съёмочному дню</li><li>Пересъёмка означает новый бюджет</li><li>Невозможные кадры стоят как фильм</li></ul></div>
+    <div class="new"><h3 class="mono">Через ИИ в KADR</h3>
+      <ul><li>Команда из режиссёра и моушн-дизайнера</li><li>Любая локация, эпоха и погода</li><li>Первые варианты за несколько дней</li><li>Правки без выезда на площадку</li><li>Невозможные кадры — норма жанра</li></ul></div>
+  </div>
+</div></section>
+
+<!-- PROCESS -->
+<section class="process panel" id="process">
+  <div class="wrap">
+    <p class="eyebrow mono">Процесс</p>
+    <h2 class="h2" data-reveal>Как мы делаем ролик</h2>
+    <div class="nle" id="nle">
+      <div class="nle-head mono"><span>KADR_project_v1.prproj</span><b id="nleTc">00:00:00:00</b></div>
+      <div class="lanes">
+        <span></span><div class="ruler"></div>
+        <span class="lb mono">V1</span>
+        <div class="clips" id="clips">
+          <div class="clip" style="--f:1"><b>Бриф</b><span class="mono">День 1</span></div>
+          <div class="clip" style="--f:1.3"><b>Сценарий</b><span class="mono">1–2 дня</span></div>
+          <div class="clip" style="--f:1.9"><b>Генерация</b><span class="mono">2–5 дней</span></div>
+          <div class="clip" style="--f:1.5"><b>Монтаж</b><span class="mono">1–3 дня</span></div>
+          <div class="clip" style="--f:.9"><b>Сдача</b><span class="mono">Финал</span></div>
+        </div>
+        <span class="lb mono">A1</span><div class="wave" id="wave"></div>
+        <span class="lb mono">KF</span><div class="keys"><i style="left:3%"></i><i style="left:15%"></i><i style="left:34%"></i><i style="left:47%"></i><i style="left:61%"></i><i style="left:78%"></i><i style="left:96%"></i></div>
+        <div class="ph-area"><div class="playhead" id="playhead"></div></div>
+      </div>
+    </div>
+    <div class="steps5" id="steps5">
+      <div><span class="mono">01</span><h3>Бриф</h3><p>Созвон на 30 минут: цель, площадка, референсы. Фиксируем срок и стоимость.</p></div>
+      <div><span class="mono">02</span><h3>Сценарий</h3><p>Сценарий и раскадровка на согласование. Здесь дешевле всего что-то менять.</p></div>
+      <div><span class="mono">03</span><h3>Генерация</h3><p>Генерируем планы, голос и музыку. Показываем черновой монтаж.</p></div>
+      <div><span class="mono">04</span><h3>Монтаж</h3><p>Правки, цветокор, саунд-дизайн и титры.</p></div>
+      <div><span class="mono">05</span><h3>Сдача</h3><p>Файлы под все площадки: 9:16, 1:1 и 16:9.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq wrap" id="faq">
+  <div class="faq-grid">
+    <div><p class="eyebrow mono">Вопросы</p><h2 class="h2">Коротко<br>о главном</h2></div>
+    <div>
+      <details><summary>Можно ли использовать ИИ-ролик в рекламе?</summary><p>Да. Работаем в сервисах с коммерческой лицензией и передаём вам права на итоговый ролик.</p></details>
+      <details><summary>Сколько стоит ролик?</summary><p>Зависит от длины, количества сцен и персонажей. Точную цену называем после брифа, бриф бесплатный.</p></details>
+      <details><summary>Нужны ли от нас фото товара или съёмка?</summary><p>Достаточно нескольких фотографий продукта и логотипа. Остальное сгенерируем.</p></details>
+      <details><summary>Можно заказать ролик, сайт и приложение вместе?</summary><p>Да, так выходит дешевле и быстрее: один стиль, одна команда, общий контент для всех экранов.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow mono">Контакты</p>
+    <h2 class="contact-title" data-split>Сгенерируем <em>ваш кадр?</em></h2>
+    <p class="contact-lead">Напишите, какой ролик, сайт или приложение вам нужен. Ответим с идеями и сметой.</p>
+    <!-- КОНТАКТЫ: замените на свои -->
+    <div class="contacts">
+      <a class="ct" href="https://t.me/your_telegram" target="_blank" rel="noopener"><span class="mono">Telegram</span><b>@your_telegram</b><i>→</i></a>
+      <a class="ct" href="https://wa.me/70000000000" target="_blank" rel="noopener"><span class="mono">WhatsApp</span><b>+7 000 000-00-00</b><i>→</i></a>
+      <a class="ct" href="mailto:you@example.com"><span class="mono">Почта</span><b>you@example.com</b><i>→</i></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="wordmark" aria-hidden="true">KADR</p>
+    <div class="foot mono"><span>© 2026 KADR Studio</span><span>Моушн на ИИ · Сайты · Приложения</span><a href="#top">Наверх ↑</a></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const map = (v, a, b) => clamp((v - a) / (b - a));
+const pad = n => String(n).padStart(2, '0');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasG = !!(window.gsap && window.ScrollTrigger);
+
+/* ---------- WebGL: one diffusion shader, used by hero and pipeline ---------- */
+const FS = `precision highp float;
+uniform vec2 uRes;uniform float uTime,uNoise,uPix,uGrade;uniform vec2 uMouse;
+float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){v+=a*n(p);p=m*p;a*=.5;}return v;}
+void main(){
+  vec2 fc=gl_FragCoord.xy;
+  if(uPix>1.)fc=floor(fc/uPix)*uPix+uPix*.5;
+  vec2 p=(fc-.5*uRes)/uRes.y;
+  float t=uTime*.05;
+  vec2 m=(uMouse-.5)*vec2(uRes.x/uRes.y,1.);
+  float d=length(p-m);
+  vec2 q=vec2(fbm(p*1.5+t),fbm(p*1.5-t+3.1));
+  vec2 r=vec2(fbm(p*1.3+q*2.3+vec2(1.7,9.2)+t*1.4-.22/(d+.5)),fbm(p*1.3+q*2.3+vec2(8.3,2.8)-t));
+  float f=fbm(p*1.1+r*2.5);
+  vec3 ink=vec3(.02,.03,.04),deep=vec3(.02,.2,.22),teal=vec3(.1,.56,.56),amber=vec3(1.,.5,.18),hot=vec3(1.,.82,.6);
+  vec3 col=mix(ink,deep,smoothstep(.1,.6,f));
+  col=mix(col,teal,smoothstep(.4,.85,f*q.y*1.7));
+  col=mix(col,amber*1.3,smoothstep(.45,.9,r.x*f*1.8));
+  col+=hot*pow(smoothstep(.55,1.,f*r.y*1.9),2.)*1.2;
+  vec2 dm=p-m;
+  col+=vec3(1.,.55,.25)*exp(-abs(dm.y)*42.)*exp(-abs(dm.x)*1.1)*.75;
+  col+=vec3(.4,.9,1.)*exp(-abs(dm.y)*90.)*exp(-abs(dm.x)*2.5)*.25;
+  col+=hot*exp(-length(dm)*4.5)*.5;
+  col*=1.35;
+  col=col*(2.51*col+.03)/(col*(2.43*col+.59)+.14);
+  float l=dot(col,vec3(.299,.587,.114));
+  col=mix(vec3(l)*vec3(1.,.97,.93),col,uGrade);
+  col*=1.-.45*smoothstep(.5,1.3,length(p*vec2(.75,1.)));
+  float g=h(fc*.73+fract(uTime*7.3)*91.);
+  vec3 nz=vec3(g)*vec3(1.,.93,.86)*.8;
+  col=mix(col,nz,uNoise);
+  col+=(g-.5)*.06;
+  gl_FragColor=vec4(col,1.);
+}`;
+const VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+
+function makeGL(canvas, scale) {
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' });
+  if (!gl) return null;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } return s; };
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) return null;
+  const pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr); gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = {}; ['uRes', 'uTime', 'uNoise', 'uPix', 'uGrade', 'uMouse'].forEach(k => U[k] = gl.getUniformLocation(pr, k));
+  const o = { canvas, noise: 1, pix: 1, grade: 1, mx: .5, my: .5, tmx: .5, tmy: .5, visible: true, k: 1 };
+  o.resize = () => {
+    const r = canvas.getBoundingClientRect();
+    o.k = Math.min(devicePixelRatio || 1, 1.5) * scale;
+    canvas.width = Math.max(2, Math.round(r.width * o.k)); canvas.height = Math.max(2, Math.round(r.height * o.k));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  };
+  o.render = t => {
+    o.mx += (o.tmx - o.mx) * .05; o.my += (o.tmy - o.my) * .05;
+    gl.uniform2f(U.uRes, canvas.width, canvas.height); gl.uniform1f(U.uTime, t);
+    gl.uniform1f(U.uNoise, o.noise); gl.uniform1f(U.uPix, Math.max(1, o.pix * o.k)); gl.uniform1f(U.uGrade, o.grade);
+    gl.uniform2f(U.uMouse, o.mx, o.my);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  o.resize();
+  new IntersectionObserver(([e]) => o.visible = e.isIntersecting).observe(canvas);
+  return o;
+}
+const hero = null;
+const pipe = makeGL($('#pipeGL'), .7);
+const gls = [hero, pipe].filter(Boolean);
+addEventListener('resize', () => gls.forEach(g => g.resize()));
+let lastMove = -1e4;
+if (hero) { hero.tmy = hero.my = .62; addEventListener('pointermove', e => { lastMove = performance.now(); hero.tmx = e.clientX / innerWidth; hero.tmy = 1 - e.clientY / innerHeight; }, { passive: true }); }
+const t0 = performance.now();
+(function loop() {
+  const t = reduce ? 12 : (performance.now() - t0) / 1000;
+  if (hero && performance.now() - lastMove > 2500) { hero.tmx = .62 + .22 * Math.sin(t * .27); hero.tmy = .6 + .12 * Math.cos(t * .21); }
+  gls.forEach(g => g.visible && g.render(t));
+  if (!reduce) requestAnimationFrame(loop);
+})();
+
+/* ---------- text split ---------- */
+function splitChars(el) {
+  const walk = node => [...node.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(' '); return; }
+        const w = document.createElement('span'); w.className = 'w';
+        [...part].forEach(ch => { const s = document.createElement('span'); s.className = 'c'; s.textContent = ch; w.append(s); });
+        frag.append(w);
+      });
+      c.replaceWith(frag);
+    } else if (c.nodeType === 1 && c.tagName !== 'BR') walk(c);
+  });
+  walk(el); return $$('.c', el);
+}
+function splitWords(el) {
+  const walk = node => [...node.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(' '); return; }
+        const s = document.createElement('span'); s.className = 'wd'; s.textContent = part; frag.append(s);
+      });
+      c.replaceWith(frag);
+    } else if (c.nodeType === 1) walk(c);
+  });
+  walk(el); return $$('.wd', el);
+}
+
+/* ---------- page timecode ---------- */
+const tcEl = $('#tc');
+const toTC = frames => `00:${pad(Math.floor(frames / 1440) % 60)}:${pad(Math.floor(frames / 24) % 60)}:${pad(frames % 24)}`;
+const nav = $('#nav'); let lastY = 0;
+function onScroll() {
+  const y = scrollY;
+  tcEl.textContent = toTC(Math.floor(y / 5));
+  nav.classList.toggle('solid', y > 40);
+  nav.classList.toggle('hide', y > lastY && y > 600);
+  lastY = y;
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+/* ---------- pipeline state (works with or without GSAP) ---------- */
+const PROMPT = 'кинематографичный пролёт камеры над ночным городом, тёплый свет фонарей, бирюзовые тени, объектив 35 мм, медленный dolly-in';
+const stagesEn = ['PROMPT', 'STORYBOARD', 'GENERATE', 'RENDER'];
+const pipeVid = $('#pipeVid');
+const pSteps = $$('.pipe-steps li');
+function setPipe(p) {
+  if (pipe) {
+    pipe.noise = p < .25 ? 1 : p < .5 ? 1 - .3 * map(p, .25, .5) : .7 * (1 - map(p, .5, .76));
+    pipe.pix = p < .25 ? 30 : p < .5 ? 30 - 16 * map(p, .25, .5) : 14 - 13 * map(p, .5, .72);
+    pipe.grade = map(p, .74, .98);
+  }
+  $('#promptText').textContent = PROMPT.slice(0, Math.round(PROMPT.length * map(p, .02, .22)));
+  $('#promptBox').style.opacity = 1 - map(p, .46, .54);
+  $('#board').style.opacity = Math.min(map(p, .25, .32), 1 - map(p, .58, .68));
+  const i = Math.min(3, Math.floor(p * 4));
+  pSteps.forEach((li, k) => li.classList.toggle('on', k === i));
+  $('#pipeStage').textContent = stagesEn[i];
+  $('#pipePct').textContent = String(Math.round(p * 100)).padStart(3, '0') + '%';
+  $('#pbar').style.transform = `scaleX(${p})`;
+  const vo = map(p, .8, .95); pipeVid.style.opacity = vo;
+  if (vo > 0 && pipeVid.paused) pipeVid.play().catch(() => {}); else if (vo === 0 && !pipeVid.paused) pipeVid.pause();
+}
+
+/* ---------- timeline (process) ---------- */
+const wave = $('#wave');
+for (let i = 0; i < 120; i++) { const b = document.createElement('i'); b.style.height = (18 + Math.abs(Math.sin(i * .37) * Math.cos(i * .11)) * 82) + '%'; wave.append(b); }
+const clips = $$('.clip'), s5 = $$('#steps5 > div');
+function setNle(p) {
+  const ph = $('#playhead'); ph.style.transform = `translateX(${p * ph.parentElement.offsetWidth}px)`;
+  $('#nleTc').textContent = toTC(Math.floor(p * 24 * 60));
+  const lanes = $('#clips'), x = p * lanes.offsetWidth;
+  let idx = 0; clips.forEach((c, k) => { if (x >= c.offsetLeft - lanes.offsetLeft - 1) idx = k; });
+  clips.forEach((c, k) => c.classList.toggle('on', k === idx));
+  s5.forEach((c, k) => c.classList.toggle('on', k === idx));
+}
+
+/* ---------- hero showreel: vertical cut on portrait phones ---------- */
+const heroVid = $('#heroVid');
+if (matchMedia('(max-aspect-ratio: 4/5)').matches) { heroVid.poster = 'video/showreel-tall.jpg'; heroVid.src = 'video/showreel-tall.mp4'; }
+if (reduce) heroVid.removeAttribute('autoplay'), heroVid.pause();
+heroVid.addEventListener('timeupdate', () => { const t = heroVid.currentTime; $('#heroTc').textContent = `00:${pad(Math.floor(t / 60))}:${pad(Math.floor(t % 60))}`; });
+
+/* ---------- showreel videos: play only while on screen; click opens a large view ---------- */
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && !reduce) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+}), { threshold: .25 });
+$$('.card video').forEach(v => vio.observe(v));
+const lb = $('#lb'), lbv = $('#lbv');
+function closeLb() { lb.hidden = true; lbv.pause(); lbv.removeAttribute('src'); lbv.load(); window.__lenis?.start(); }
+$$('[data-video]').forEach(c => c.addEventListener('click', () => {
+  lbv.src = c.dataset.video; lb.hidden = false; lbv.play().catch(() => {}); window.__lenis?.stop();
+}));
+$$('.card[data-video]').forEach(c => c.addEventListener('keydown', e => { if (e.key === 'Enter') c.click(); }));
+$('#lbx').addEventListener('click', closeLb);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+/* ---------- no GSAP / reduced motion: static but complete ---------- */
+if (!hasG || reduce) {
+  if (hero) hero.noise = 0;
+  setPipe(.99); setNle(.99);
+  return;
+}
+
+/* ================= MOTION ================= */
+gsap.registerPlugin(ScrollTrigger);
+document.documentElement.classList.add('motion');
+
+const lenis = window.__lenis = new Lenis({ lerp: .085, wheelMultiplier: 1 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+$$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href'); const el = id.length > 1 && $(id);
+  if (el) { e.preventDefault(); lenis.scrollTo(el, { duration: 1.6, offset: id === '#top' ? 0 : -10 }); }
+}));
+
+const E = 'expo.out';
+
+/* hero intro: the showreel fades up from black, then the title builds */
+const heroChars = splitChars($('.hero-title'));
+gsap.set(heroChars, { yPercent: 115, rotate: 6 });
+gsap.set('[data-fade]', { y: 30, opacity: 0 });
+gsap.timeline({ delay: .1 })
+  .fromTo('.hero-vid', { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 2.4, ease: 'power2.out' }, 0)
+  .from('.vf', { opacity: 0, duration: 1, ease: 'power2.out' }, .6)
+  .to(heroChars, { yPercent: 0, rotate: 0, duration: 1.3, ease: E, stagger: .035 }, .5)
+  .to('[data-fade]', { y: 0, opacity: 1, duration: 1.1, ease: E, stagger: .12 }, 1.1);
+
+/* hero scroll-out: the reel recedes as the page takes over */
+gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
+  .to('.hero-inner', { y: -120, opacity: 0, ease: 'none' }, 0)
+  .to('.vf', { opacity: 0, ease: 'none' }, 0)
+  .to('.hero-vid', { scale: 1.08, opacity: .35, ease: 'none' }, 0);
+
+/* marquee with scroll velocity */
+const mq = gsap.to('#mq', { xPercent: -50, duration: 38, ease: 'none', repeat: -1 });
+const skew = gsap.quickTo('#mq', 'skewX', { duration: .5, ease: 'power3' });
+ScrollTrigger.create({
+  onUpdate(self) {
+    const v = self.getVelocity();
+    skew(clamp(v / -300, -12, 12));
+    gsap.to(mq, { timeScale: (v < 0 ? -1 : 1) * (1 + Math.min(Math.abs(v) / 400, 6)), duration: .2, overwrite: true });
+    gsap.to(mq, { timeScale: v < 0 ? -1 : 1, duration: 1.2, delay: .25, ease: 'power2.out' });
+  }
+});
+
+/* manifesto words light up */
+const words = splitWords($('[data-words]'));
+gsap.fromTo(words, { opacity: .13 }, { opacity: 1, stagger: .1, ease: 'none',
+  scrollTrigger: { trigger: '.manifesto', start: 'top 70%', end: 'bottom 55%', scrub: true } });
+
+/* reel horizontal scroll */
+const track = $('#track');
+const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+gsap.to(track, { x: () => -dist(), ease: 'none',
+  scrollTrigger: { trigger: '#reel', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: .8, invalidateOnRefresh: true,
+    onUpdate: s => $('#reelBar').style.transform = `scaleX(${s.progress})` } });
+$$('.card').forEach((c, i) => gsap.from(c, { y: 60 + (i % 3) * 30, opacity: 0, duration: 1.2, ease: E,
+  scrollTrigger: { trigger: '#reel', start: 'top 75%', once: true }, delay: Math.min(i, 3) * .08 }));
+
+/* pipeline pin */
+setPipe(0);
+ScrollTrigger.create({ trigger: '#pipeline', start: 'top top', end: '+=280%', pin: true, scrub: true,
+  onUpdate: self => setPipe(self.progress) });
+gsap.from('.frame', { scale: .9, rotateX: 12, opacity: .4, transformPerspective: 1200,
+  scrollTrigger: { trigger: '#pipeline', start: 'top 85%', end: 'top top', scrub: true } });
+
+/* section transition: each band opens like an aperture, from an inset rounded card to full bleed */
+$$('.panel').forEach(el => gsap.fromTo(el,
+  { clipPath: 'inset(0% 5% 0% 5% round 56px 56px 0px 0px)' },
+  { clipPath: 'inset(0% 0% 0% 0% round 0px 0px 0px 0px)', ease: 'none',
+    scrollTrigger: { trigger: el, start: 'top bottom', end: 'top 20%', scrub: true } }));
+
+/* every section heading builds in by characters, same as the hero */
+$$('.h2').forEach(h => {
+  const cs = splitChars(h);
+  gsap.from(cs, { yPercent: 115, rotate: 5, duration: 1.1, ease: E, stagger: .02,
+    scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
+});
+
+/* generic reveals */
+$$('[data-reveal]:not(.h2)').forEach(el => gsap.from(el, { y: 50, opacity: 0, duration: 1.2, ease: E,
+  scrollTrigger: { trigger: el, start: 'top 88%', once: true } }));
+$$('.services .tags li, .vs li').forEach(el => gsap.from(el, { opacity: 0, y: 12, duration: .7, ease: E,
+  scrollTrigger: { trigger: el, start: 'top 92%', once: true } }));
+
+/* portfolio cards */
+$$('.pf').forEach((el, i) => gsap.from(el, { y: 60, opacity: 0, duration: 1.1, ease: E, delay: (i % 3) * .08,
+  scrollTrigger: { trigger: el, start: 'top 92%', once: true } }));
+
+/* devices pin */
+const dc = $$('#devCopy > div');
+gsap.set(dc.slice(1), { autoAlpha: 0, y: 24 });
+const dtl = gsap.timeline({ scrollTrigger: { trigger: '#apps', start: 'top top', end: '+=260%', pin: true, scrub: .6 } });
+dtl.fromTo('#browser', { scale: .78, rotateX: 22, y: 80, transformPerspective: 1400 }, { scale: 1, rotateX: 0, y: 0, duration: 1.2, ease: 'power2.out' })
+  .fromTo('#phone', { xPercent: 140, rotateY: -50, rotateZ: 10, opacity: 0 }, { xPercent: 0, rotateY: -16, rotateZ: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }, .5)
+  .to(dc[0], { autoAlpha: 0, y: -24, duration: .4 }, 1.6)
+  .to(dc[1], { autoAlpha: 1, y: 0, duration: .5 }, 1.8)
+  .to('.scr-1', { opacity: 0, duration: .4 }, 1.8).to('.scr-2', { opacity: 1, duration: .4 }, 1.8)
+  .to('#phone', { rotateY: 0, scale: 1.08, duration: 1 }, 1.8)
+  .to('#browser', { scale: .94, opacity: .55, duration: 1 }, 1.8)
+  .to(dc[1], { autoAlpha: 0, y: -24, duration: .4 }, 3)
+  .to(dc[2], { autoAlpha: 1, y: 0, duration: .5 }, 3.2)
+  .to('.scr-2', { opacity: 0, duration: .4 }, 3.2).to('.scr-3', { opacity: 1, duration: .4 }, 3.2)
+  .to('#phone', { rotateY: 14, rotateZ: -3, duration: 1 }, 3.2)
+  .to({}, { duration: .5 });
+
+/* process playhead */
+setNle(0);
+ScrollTrigger.create({ trigger: '#nle', start: 'top 75%', end: () => '+=' + (innerHeight * .9), scrub: true, onUpdate: s => setNle(s.progress) });
+gsap.from('.steps5 > div', { y: 30, opacity: 0, stagger: .1, duration: 1, ease: E, scrollTrigger: { trigger: '#steps5', start: 'top 90%', once: true } });
+
+/* contact title */
+const cChars = splitChars($('.contact-title'));
+gsap.from(cChars, { yPercent: 115, rotate: 6, duration: 1.2, ease: E, stagger: .03, scrollTrigger: { trigger: '.contact-title', start: 'top 85%', once: true } });
+gsap.from('.wordmark', { yPercent: 40, opacity: 0, duration: 1.6, ease: E, scrollTrigger: { trigger: 'footer', start: 'top 95%', once: true } });
+
+/* magnetic buttons */
+if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  $$('.magnetic').forEach(b => {
+    const xT = gsap.quickTo(b, 'x', { duration: .6, ease: 'power3' }), yT = gsap.quickTo(b, 'y', { duration: .6, ease: 'power3' });
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); xT((e.clientX - r.left - r.width / 2) * .3); yT((e.clientY - r.top - r.height / 2) * .35); });
+    b.addEventListener('pointerleave', () => { xT(0); yT(0); });
+  });
+  /* custom cursor */
+  document.documentElement.classList.add('has-cursor');
+  const dot = $('.cursor'), ring = $('.cursor-ring');
+  const dx = gsap.quickTo(dot, 'x', { duration: .1 }), dy = gsap.quickTo(dot, 'y', { duration: .1 });
+  const rx = gsap.quickTo(ring, 'x', { duration: .45, ease: 'power3' }), ry = gsap.quickTo(ring, 'y', { duration: .45, ease: 'power3' });
+  addEventListener('pointermove', e => { dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); }, { passive: true });
+  document.addEventListener('pointerover', e => {
+    const card = e.target.closest('.card:not(.card-cta)');
+    ring.classList.toggle('view', !!card);
+    ring.classList.toggle('link', !card && !!e.target.closest('a,button,summary'));
+  });
+}
+
+document.fonts?.ready.then(() => ScrollTrigger.refresh());
+addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
