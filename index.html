@@ -1095,22 +1095,13 @@ $('#reelMore').addEventListener('click', () => {
   if (!reduce) rise($$('.reel-grid .card.more'));
 });
 
-/* pipeline pin */
+/* pipeline: no pin, the four stages play by themselves once the frame is on screen */
 setPipe(0);
-gsap.matchMedia()
-  /* wide screens: scroll scrubs the four stages while the section is pinned */
-  .add('(min-width: 768px)', () => {
-    ScrollTrigger.create({ trigger: '#pipeline', start: 'top top', end: '+=280%', pin: true, scrub: true,
-      onUpdate: self => setPipe(self.progress) });
-  })
-  /* phones: no pin, the stages play by themselves once the frame is on screen */
-  .add('(max-width: 767px)', () => {
-    const st = { p: 0 };
-    ScrollTrigger.create({ trigger: '.frame', start: 'top 75%', once: true,
-      onEnter: () => gsap.to(st, { p: 1, duration: 4.5, ease: 'power1.inOut', onUpdate: () => setPipe(st.p) }) });
-  });
+const pipeSt = { p: 0 };
+ScrollTrigger.create({ trigger: '.frame', start: 'top 70%', once: true,
+  onEnter: () => gsap.to(pipeSt, { p: 1, duration: 4, ease: 'power1.inOut', onUpdate: () => setPipe(pipeSt.p) }) });
 gsap.from('.frame', { scale: .9, rotateX: 12, opacity: .4, transformPerspective: 1200,
-  scrollTrigger: { trigger: '#pipeline', start: 'top 85%', end: 'top top', scrub: true } });
+  scrollTrigger: { trigger: '#pipeline', start: 'top 85%', end: 'top 25%', scrub: true } });
 
 /* section transition: each band opens like an aperture, from an inset rounded card to full bleed */
 $$('.panel').forEach(el => gsap.fromTo(el,
