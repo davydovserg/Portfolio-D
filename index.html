@@ -158,7 +158,20 @@ a{color:inherit;text-decoration:none}
 .lightbox[hidden]{display:none}
 .lightbox video{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 40px 120px rgba(0,0,0,.6)}
 .lb-x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line-2);background:transparent;color:var(--paper);font:300 26px/1 var(--f-display);cursor:pointer}
-.pipe-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0}
+.takes{position:absolute;inset:0;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#000;opacity:0}
+.takes figure{margin:0;position:relative;overflow:hidden;border-radius:3px;box-shadow:inset 0 0 0 2px transparent;transition:opacity .45s var(--ease),box-shadow .45s var(--ease)}
+.takes img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.takes figcaption{position:absolute;left:10px;bottom:8px;font:500 10px/1 var(--f-mono);letter-spacing:.12em;color:#F1EBE3;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.takes.picked figure{opacity:.28}
+.takes.picked figure.best{opacity:1;box-shadow:inset 0 0 0 2px var(--tungsten)}
+.takes.picked .best figcaption{color:#FFB878}
+.grade{position:absolute;inset:0;z-index:2;opacity:0}
+.grade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.grade .flat{filter:saturate(.25) contrast(.78) brightness(1.12)}
+.grade .graded{clip-path:inset(0 100% 0 0)}
+.grade .wipe{position:absolute;top:0;bottom:0;left:0;width:2px;margin-left:-1px;background:#FFB878;box-shadow:0 0 14px #FFB878}
+.grade .gl-l,.grade .gl-r{position:absolute;bottom:16px;font-size:10px;letter-spacing:.14em;color:#F1EBE3;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.grade .gl-l{right:16px}.grade .gl-r{left:16px}
 .card h3{font:600 clamp(14px,1.2vw,19px)/1.22 var(--f-display);letter-spacing:-.02em;margin:0;max-width:32ch;color:#F1EBE3;text-wrap:balance}
 /* reel: bento grid; phones size tiles by aspect, wide screens lock them to a shared row height */
 .reel-body{--g:clamp(8px,1.1vw,16px);container-type:inline-size}
@@ -561,6 +574,12 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <div class="m-bot mono"><span>Motion Control</span><span>AI</span></div></div>
       <div class="cap"><span class="kind mono">Motion Control</span><h3>Анимация движения по референсу</h3></div>
     </article>
+    <article class="card more" data-size="xl" tabindex="0" data-r="h" data-video="video/daynight.mp4">
+      <div class="media"><video src="video/daynight.mp4" poster="video/daynight.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:05</span></div>
+        <div class="m-bot mono"><span>Недвижимость</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Недвижимость</span><h3>Жилой комплекс: день сменяется ночью за один план</h3></div>
+    </article>
     <article class="card more" tabindex="0" data-r="v" data-video="video/fairy.mp4">
       <div class="media"><video src="video/fairy.mp4" poster="video/fairy.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
@@ -619,7 +638,18 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
     <div class="pipe-frame">
       <div class="frame">
         <canvas class="gl" id="pipeGL" aria-hidden="true"></canvas>
-        <video class="pipe-vid" id="pipeVid" src="video/daynight.mp4" poster="video/daynight.jpg" muted loop playsinline preload="metadata"></video>
+        <div class="takes" id="takes" aria-hidden="true">
+          <figure><img src="work/take-1.jpg" alt="" loading="lazy"><figcaption>ДУБЛЬ 01</figcaption></figure>
+          <figure><img src="work/take-2.jpg" alt="" loading="lazy"><figcaption>ДУБЛЬ 02</figcaption></figure>
+          <figure class="best"><img src="work/take-3.jpg" alt="" loading="lazy"><figcaption>ДУБЛЬ 03 ✓</figcaption></figure>
+          <figure><img src="work/take-4.jpg" alt="" loading="lazy"><figcaption>ДУБЛЬ 04</figcaption></figure>
+        </div>
+        <div class="grade" id="grade" aria-hidden="true">
+          <img class="flat" src="work/take-3.jpg" alt="" loading="lazy">
+          <img class="graded" id="graded" src="work/take-3.jpg" alt="" loading="lazy">
+          <i class="wipe" id="wipe"></i>
+          <span class="gl-l mono">RAW</span><span class="gl-r mono">GRADE</span>
+        </div>
         <svg class="board" id="board" viewBox="0 0 160 90" fill="none" stroke="#FFB878" stroke-width=".35" aria-hidden="true">
           <path d="M53.3 0v90M106.7 0v90M0 30h160M0 60h160" stroke-dasharray="1.5 1.5" opacity=".7"/>
           <path d="M0 58 C30 52 50 62 80 56 S130 50 160 55" />
@@ -972,7 +1002,7 @@ addEventListener('scroll', onScroll, { passive: true }); onScroll();
 /* ---------- pipeline state (works with or without GSAP) ---------- */
 const PROMPT = 'кинематографичный пролёт камеры над ночным городом, тёплый свет фонарей, бирюзовые тени, объектив 35 мм, медленный dolly-in';
 const stagesEn = ['PROMPT', 'STORYBOARD', 'GENERATE', 'RENDER'];
-const pipeVid = $('#pipeVid');
+const takes = $('#takes'), grade = $('#grade'), graded = $('#graded'), wipe = $('#wipe'), rawTag = $('.grade .gl-l');
 const pSteps = $$('.pipe-steps li');
 function setPipe(p) {
   if (pipe) {
@@ -988,8 +1018,14 @@ function setPipe(p) {
   $('#pipeStage').textContent = stagesEn[i];
   $('#pipePct').textContent = String(Math.round(p * 100)).padStart(3, '0') + '%';
   $('#pbar').style.transform = `scaleX(${p})`;
-  const vo = map(p, .8, .95); pipeVid.style.opacity = vo;
-  if (vo > 0 && pipeVid.paused) pipeVid.play().catch(() => {}); else if (vo === 0 && !pipeVid.paused) pipeVid.pause();
+  /* 03: four takes appear, the best one is picked; 04: it fills the frame and the grade wipes across */
+  takes.style.opacity = Math.min(map(p, .5, .56), 1 - map(p, .76, .8));
+  takes.classList.toggle('picked', p > .66);
+  grade.style.opacity = map(p, .76, .8);
+  const w = map(p, .82, .97);
+  graded.style.clipPath = `inset(0 ${(1 - w) * 100}% 0 0)`;
+  wipe.style.left = w * 100 + '%'; wipe.style.opacity = w > 0 && w < 1 ? 1 : 0;
+  rawTag.style.opacity = 1 - map(w, .85, 1);
 }
 
 /* ---------- timeline (process) ---------- */
@@ -1099,7 +1135,7 @@ $('#reelMore').addEventListener('click', () => {
 setPipe(0);
 const pipeSt = { p: 0 };
 ScrollTrigger.create({ trigger: '.frame', start: 'top 70%', once: true,
-  onEnter: () => gsap.to(pipeSt, { p: 1, duration: 4, ease: 'power1.inOut', onUpdate: () => setPipe(pipeSt.p) }) });
+  onEnter: () => gsap.to(pipeSt, { p: 1, duration: 6.5, ease: 'power1.inOut', onUpdate: () => setPipe(pipeSt.p) }) });
 gsap.from('.frame', { scale: .9, rotateX: 12, opacity: .4, transformPerspective: 1200,
   scrollTrigger: { trigger: '#pipeline', start: 'top 85%', end: 'top 25%', scrub: true } });
 
