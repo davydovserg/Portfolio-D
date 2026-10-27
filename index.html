@@ -63,8 +63,6 @@ a{color:inherit;text-decoration:none}
 @keyframes blink{50%{opacity:.25}}
 .nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;color:var(--mute)}
 .nav-links a{transition:color .2s;white-space:nowrap}
-.reel-pin .reel .h2{font-size:clamp(30px,4.6vw,72px)}
-.reel-pin .reel-head{margin-bottom:clamp(20px,3vh,44px)}
 .nav-links a:hover{color:var(--paper)}
 .tc{display:flex;align-items:center;gap:8px;color:var(--mute);font-variant-numeric:tabular-nums;padding:8px 12px;border:1px solid var(--line);border-radius:999px}
 .tc b{font-weight:500;color:var(--paper)}
@@ -141,16 +139,7 @@ a{color:inherit;text-decoration:none}
 .reel{position:relative;background:var(--ink);padding-block:clamp(90px,10vw,140px) 60px;overflow:hidden}
 .reel-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px 60px;margin-bottom:clamp(30px,4vw,56px)}
 .reel-head p.note{max-width:380px;color:var(--mute);margin:0;font-size:15px}
-.track{display:flex;gap:clamp(14px,2vw,28px);padding-left:var(--gl);padding-right:var(--gr);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-.track::-webkit-scrollbar{display:none}
-.reel-pin .reel{height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:calc(70px + env(safe-area-inset-top,0px)) 30px}
-.reel-pin .track{overflow:visible;width:max-content;scroll-snap-type:none}
-.card{--h:min(44vh,460px);flex:none;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px;cursor:none}
-.card[data-r="h"] .media{height:var(--h);aspect-ratio:16/9}
-.card[data-r="v"] .media{height:var(--h);aspect-ratio:9/16}
-.card[data-r="s"] .media{height:var(--h);aspect-ratio:1/1}
 .media{position:relative;max-width:86vw;max-height:72svh;border-radius:6px;overflow:hidden;background:var(--a);isolation:isolate;transition:transform .6s var(--ease)}
-.card:hover .media{transform:scale(.975)}
 .media i{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
 .media .b1{width:90%;aspect-ratio:1;left:-20%;top:-30%;background:radial-gradient(circle,var(--b) 0,transparent 65%);animation:drift 11s ease-in-out infinite alternate}
 .media .b2{width:80%;aspect-ratio:1;right:-25%;bottom:-35%;background:radial-gradient(circle,var(--c) 0,transparent 65%);animation:drift 14s ease-in-out infinite alternate-reverse}
@@ -170,14 +159,44 @@ a{color:inherit;text-decoration:none}
 .lightbox video{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 40px 120px rgba(0,0,0,.6)}
 .lb-x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line-2);background:transparent;color:var(--paper);font:300 26px/1 var(--f-display);cursor:pointer}
 .pipe-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0}
-.card h3{font:600 clamp(17px,1.4vw,21px)/1.25 var(--f-display);letter-spacing:-.02em;margin:0;max-width:30ch}
+.card h3{font:600 clamp(14px,1.2vw,19px)/1.22 var(--f-display);letter-spacing:-.02em;margin:0;max-width:32ch;color:#F1EBE3;text-wrap:balance}
+/* reel: bento grid; phones size tiles by aspect, wide screens lock them to a shared row height */
+.reel-body{--g:clamp(8px,1.1vw,16px);container-type:inline-size}
+.reel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g);grid-auto-flow:row dense}
+.card{position:relative;display:block;border-radius:8px;overflow:hidden;background:#141217;isolation:isolate;cursor:pointer;outline-offset:3px}
+.has-cursor .card{cursor:none}
+.card[data-r="h"]{grid-column:span 2;aspect-ratio:16/9}
+.card[data-r="v"]{aspect-ratio:9/16}
+.card .media{position:absolute;inset:0;max-width:none;max-height:none;border-radius:0;transition:transform 1.2s var(--ease)}
+.card:hover .media{transform:scale(1.045)}
+.card .m-bot{display:none}
+.card .media::after{background:linear-gradient(180deg,rgba(0,0,0,.4) 0,transparent 24%,transparent 48%,rgba(0,0,0,.82));transition:opacity .5s}
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;flex-direction:column;gap:7px;padding:clamp(12px,1.4vw,22px);pointer-events:none;transition:transform .7s var(--ease)}
+.card:hover .cap{transform:translateY(-4px)}
+.card .kind{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.card-cta .cap{display:none}
+.card-cta .media{display:flex;flex-direction:column;justify-content:space-between;padding:clamp(16px,2vw,28px);background:var(--tungsten);color:var(--ink)}
+.card.more{display:none}
+.reel-grid.open .card.more{display:block}
+.reel-more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,52px)}
+.reel-grid.open + .reel-more{display:none}
+.reel-more .mono{opacity:.6;margin-left:4px}
+@media (min-width:700px){
+  .reel-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:calc((100cqw - var(--g)) * 9 / 32)}
+  .card[data-r]{aspect-ratio:auto}
+  .card[data-r="h"]{grid-column:span 2}
+  .card[data-r="v"]{grid-row:span 2}
+  .card[data-size="xl"]{grid-column:span 2;grid-row:span 2}
+  .card[data-size="xl"] h3{font-size:clamp(18px,1.8vw,28px)}
+}
+@media (max-width:699px){
+  .card .m-top span:last-child{display:none}
+  .card[data-r="v"] h3{font-size:13px}
+}
 .card .kind{color:var(--tungsten-2)}
-.card-cta{justify-content:center;align-items:flex-start}
 .card-cta .media{display:flex;flex-direction:column;justify-content:space-between;padding:28px;background:var(--tungsten);color:var(--ink)}
 .card-cta .media::before,.card-cta .media::after{display:none}
 .card-cta strong{font:800 clamp(30px,3.4vw,52px)/1 var(--f-display);letter-spacing:-.04em}
-.reel-progress{margin-top:34px;height:1px;background:var(--line);position:relative}
-.reel-progress b{position:absolute;inset:0;background:var(--tungsten);transform-origin:left;transform:scaleX(0)}
 
 /* light "paper" bands: local token flip so every child adapts */
 .light{--paper:#17141B;--mute:#6B6370;--line:rgba(23,20,27,.12);--line-2:rgba(23,20,27,.24);--tungsten:#E0601C;--tungsten-2:#C4561C;--ink:#EFE8DE;background:var(--ink);color:var(--paper)}
@@ -185,14 +204,6 @@ a{color:inherit;text-decoration:none}
 
 @media (max-width:767px){
   .reel{padding-block:72px 48px}
-  .track{gap:12px;scroll-padding-left:var(--gl);-webkit-overflow-scrolling:touch}
-  .card[data-r="h"] .media{height:auto;width:86vw;aspect-ratio:16/9}
-  .card[data-r="v"] .media{height:auto;width:64vw;aspect-ratio:9/16}
-  .card[data-r="s"] .media{height:auto;width:76vw;aspect-ratio:1/1}
-  .card h3{font-size:16px;max-width:none}
-  .card{width:min-content}
-  .card .media{max-width:none}
-  .card-cta .media{width:64vw;height:auto;aspect-ratio:9/16}
 }
 
 @media (max-width:767px){
@@ -396,7 +407,6 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
 .cursor-ring.view{width:96px;height:96px;margin:-48px 0 0 -48px;background:var(--tungsten);border-color:var(--tungsten)}
 .cursor-ring.view span{opacity:1}
 @media (hover:hover) and (pointer:fine){.has-cursor .cursor{display:block}.has-cursor .cursor-ring{display:grid}}
-.card{cursor:pointer}.has-cursor .card{cursor:none}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -451,129 +461,131 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
       <p class="eyebrow mono">Избранное</p>
       <h2 class="h2">Лучшие<br><em>работы</em></h2>
     </div>
-    <p class="note">Реальные работы: моушн-дизайн, реклама, недвижимость, персонажи и кино. Всё сгенерировано нейросетями и смонтировано у нас. Нажмите на ролик, чтобы посмотреть крупно.</p>
+    <p class="note">Реальные работы: моушн-дизайн, реклама, недвижимость, персонажи и кино. Всё сгенерировано нейросетями и смонтировано у нас. Нажмите на ролик, чтобы посмотреть крупно со звуком.</p>
   </div>
-  <div class="track" id="track">
-    <article class="card" tabindex="0" data-r="h" data-video="video/tennis.mp4">
+  <div class="wrap reel-body">
+  <div class="reel-grid" id="track">
+    <article class="card" data-size="xl" tabindex="0" data-r="h" data-video="video/tennis.mp4">
       <div class="media"><video src="video/tennis.mp4" poster="video/tennis.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>16:9</span><span>00:00:10</span></div>
         <div class="m-bot mono"><span>Бьюти-реклама</span><span>AI</span></div></div>
-      <span class="kind mono">Бьюти-реклама</span><h3>Маска с коллагеном: от утра в ванной до победы на корте</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/project-v-story.mp4">
-      <div class="media"><video src="video/project-v-story.mp4" poster="video/project-v-story.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:11</span></div>
-        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
-      <span class="kind mono">Реклама</span><h3>Рекламный ролик Project V: целая история за 11 секунд</h3>
+      <div class="cap"><span class="kind mono">Бьюти-реклама</span><h3>Маска с коллагеном: от утра в ванной до победы на корте</h3></div>
     </article>
     <article class="card" tabindex="0" data-r="v" data-video="video/wing.mp4">
       <div class="media"><video src="video/wing.mp4" poster="video/wing.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:12</span></div>
         <div class="m-bot mono"><span>Трюк</span><span>AI</span></div></div>
-      <span class="kind mono">Трюк</span><h3>Сальто на крыле самолёта в полёте</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/bella-peel.mp4">
-      <div class="media"><video src="video/bella-peel.mp4" poster="video/bella-peel.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:15</span></div>
-        <div class="m-bot mono"><span>Моушн-дизайн</span><span>AI</span></div></div>
-      <span class="kind mono">Моушн-дизайн</span><h3>Bella Peel: молекулы, жидкость и свет для косметического бренда</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/spirit.mp4">
-      <div class="media"><video src="video/spirit.mp4" poster="video/spirit.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:13</span></div>
-        <div class="m-bot mono"><span>VFX</span><span>AI</span></div></div>
-      <span class="kind mono">VFX</span><h3>Дух растения: VFX-сцена в стиле блокбастера</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/triumph.mp4">
-      <div class="media"><video src="video/triumph.mp4" poster="video/triumph.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:17</span></div>
-        <div class="m-bot mono"><span>Презентация девелопера</span><span>AI</span></div></div>
-      <span class="kind mono">Презентация девелопера</span><h3>ЖК «Триумф-Палас»: коммерческие лоты с картой и планировками</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/chocolate.mp4">
-      <div class="media"><video src="video/chocolate.mp4" poster="video/chocolate.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
-        <div class="m-bot mono"><span>Анимация персонажей</span><span>AI</span></div></div>
-      <span class="kind mono">Анимация персонажей</span><h3>Сказка для шоколадного бренда в стиле анимационного кино</h3>
+      <div class="cap"><span class="kind mono">Трюк</span><h3>Сальто на крыле самолёта в полёте</h3></div>
     </article>
     <article class="card" tabindex="0" data-r="v" data-video="video/festival.mp4">
       <div class="media"><video src="video/festival.mp4" poster="video/festival.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:17</span></div>
         <div class="m-bot mono"><span>Клип</span><span>AI</span></div></div>
-      <span class="kind mono">Музыкальный клип</span><h3>Клип артиста: фестиваль, город, вулкан</h3>
+      <div class="cap"><span class="kind mono">Музыкальный клип</span><h3>Клип артиста: фестиваль, город, вулкан</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/bella-peel.mp4">
+      <div class="media"><video src="video/bella-peel.mp4" poster="video/bella-peel.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:15</span></div>
+        <div class="m-bot mono"><span>Моушн-дизайн</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Моушн-дизайн</span><h3>Bella Peel: молекулы, жидкость и свет для косметического бренда</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/spirit.mp4">
+      <div class="media"><video src="video/spirit.mp4" poster="video/spirit.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:13</span></div>
+        <div class="m-bot mono"><span>VFX</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">VFX</span><h3>Дух растения: VFX-сцена в стиле блокбастера</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/project-v-story.mp4">
+      <div class="media"><video src="video/project-v-story.mp4" poster="video/project-v-story.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:11</span></div>
+        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Реклама</span><h3>Рекламный ролик Project V: целая история за 11 секунд</h3></div>
     </article>
     <article class="card" tabindex="0" data-r="v" data-video="video/clg.mp4">
       <div class="media"><video src="video/clg.mp4" poster="video/clg.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:14</span></div>
         <div class="m-bot mono"><span>Бьюти-реклама</span><span>AI</span></div></div>
-      <span class="kind mono">Бьюти-реклама</span><h3>CLG: коллаген от молекулы до подиума</h3>
+      <div class="cap"><span class="kind mono">Бьюти-реклама</span><h3>CLG: коллаген от молекулы до подиума</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/chocolate.mp4">
+      <div class="media"><video src="video/chocolate.mp4" poster="video/chocolate.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
+        <div class="m-bot mono"><span>Анимация персонажей</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Анимация персонажей</span><h3>Сказка для шоколадного бренда в стиле анимационного кино</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="h" data-video="video/triumph.mp4">
+      <div class="media"><video src="video/triumph.mp4" poster="video/triumph.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:17</span></div>
+        <div class="m-bot mono"><span>Презентация девелопера</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Презентация девелопера</span><h3>ЖК «Триумф-Палас»: коммерческие лоты с картой и планировками</h3></div>
     </article>
     <article class="card" tabindex="0" data-r="v" data-video="video/villa-dubai.mp4">
       <div class="media"><video src="video/villa-dubai.mp4" poster="video/villa-dubai.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:06</span></div>
         <div class="m-bot mono"><span>Недвижимость</span><span>AI</span></div></div>
-      <span class="kind mono">Недвижимость</span><h3>Вилла в Дубае: от бассейна до гостиной с видом на Бурдж-Халифу</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/villa-arches.mp4">
-      <div class="media"><video src="video/villa-arches.mp4" poster="video/villa-arches.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>9:16</span><span>00:00:06</span></div>
-        <div class="m-bot mono"><span>Архитектура</span><span>AI</span></div></div>
-      <span class="kind mono">Архитектура</span><h3>Пролёт сквозь арки виллы на закате</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/bella-device.mp4">
-      <div class="media"><video src="video/bella-device.mp4" poster="video/bella-device.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:10</span></div>
-        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
-      <span class="kind mono">Реклама</span><h3>Bella: косметологический аппарат, который дарят в ресторане</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/project-v-ad.mp4">
-      <div class="media"><video src="video/project-v-ad.mp4" poster="video/project-v-ad.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>9:16</span><span>00:00:10</span></div>
-        <div class="m-bot mono"><span>Продуктовая реклама</span><span>AI</span></div></div>
-      <span class="kind mono">Продуктовая реклама</span><h3>Путешествие внутрь организма для бренда витаминов</h3>
+      <div class="cap"><span class="kind mono">Недвижимость</span><h3>Вилла в Дубае: от бассейна до гостиной с видом на Бурдж-Халифу</h3></div>
     </article>
     <article class="card" tabindex="0" data-r="v" data-video="video/office-dance.mp4">
       <div class="media"><video src="video/office-dance.mp4" poster="video/office-dance.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:14</span></div>
         <div class="m-bot mono"><span>Motion Control</span><span>AI</span></div></div>
-      <span class="kind mono">Motion Control</span><h3>Танец у бизнес-центра: движение по референсу</h3>
+      <div class="cap"><span class="kind mono">Motion Control</span><h3>Танец у бизнес-центра: движение по референсу</h3></div>
     </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/fantasy.mp4">
+    <article class="card" data-size="xl" tabindex="0" data-r="h" data-video="video/bella-device.mp4">
+      <div class="media"><video src="video/bella-device.mp4" poster="video/bella-device.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:10</span></div>
+        <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Реклама</span><h3>Bella: косметологический аппарат, который дарят в ресторане</h3></div>
+    </article>
+    <article class="card more" tabindex="0" data-r="v" data-video="video/project-v-ad.mp4">
+      <div class="media"><video src="video/project-v-ad.mp4" poster="video/project-v-ad.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:10</span></div>
+        <div class="m-bot mono"><span>Продуктовая реклама</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Продуктовая реклама</span><h3>Путешествие внутрь организма для бренда витаминов</h3></div>
+    </article>
+    <article class="card more" tabindex="0" data-r="v" data-video="video/fantasy.mp4">
       <div class="media"><video src="video/fantasy.mp4" poster="video/fantasy.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:11</span></div>
         <div class="m-bot mono"><span>Кино и клипы</span><span>AI</span></div></div>
-      <span class="kind mono">Кино и клипы</span><h3>Светящийся лес и цитадель над облаками</h3>
+      <div class="cap"><span class="kind mono">Кино и клипы</span><h3>Светящийся лес и цитадель над облаками</h3></div>
     </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/timelapse.mp4">
-      <div class="media"><video src="video/timelapse.mp4" poster="video/timelapse.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>16:9</span><span>00:00:07</span></div>
-        <div class="m-bot mono"><span>Девелопмент</span><span>AI</span></div></div>
-      <span class="kind mono">Девелопмент</span><h3>От пустого участка до готового квартала за 7 секунд</h3>
+    <article class="card more" tabindex="0" data-r="v" data-video="video/villa-arches.mp4">
+      <div class="media"><video src="video/villa-arches.mp4" poster="video/villa-arches.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:06</span></div>
+        <div class="m-bot mono"><span>Архитектура</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Архитектура</span><h3>Пролёт сквозь арки виллы на закате</h3></div>
     </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/fairy.mp4">
-      <div class="media"><video src="video/fairy.mp4" poster="video/fairy.jpg" muted loop playsinline preload="none"></video>
-        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
-        <div class="m-bot mono"><span>Персонажи</span><span>AI</span></div></div>
-      <span class="kind mono">Персонажи</span><h3>Персонаж из воды для детского бренда</h3>
-    </article>
-    <article class="card" tabindex="0" data-r="v" data-video="video/dance.mp4">
+    <article class="card more" tabindex="0" data-r="v" data-video="video/dance.mp4">
       <div class="media"><video src="video/dance.mp4" poster="video/dance.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
         <div class="m-bot mono"><span>Motion Control</span><span>AI</span></div></div>
-      <span class="kind mono">Motion Control</span><h3>Анимация движения по референсу</h3>
+      <div class="cap"><span class="kind mono">Motion Control</span><h3>Анимация движения по референсу</h3></div>
     </article>
-    <article class="card" tabindex="0" data-r="h" data-video="video/manor.mp4">
+    <article class="card more" tabindex="0" data-r="v" data-video="video/fairy.mp4">
+      <div class="media"><video src="video/fairy.mp4" poster="video/fairy.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>9:16</span><span>00:00:08</span></div>
+        <div class="m-bot mono"><span>Персонажи</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Персонажи</span><h3>Персонаж из воды для детского бренда</h3></div>
+    </article>
+    <a class="card card-cta more" data-r="v" href="#contact">
+      <div class="media"><span class="mono">Следующий ролик</span><strong>Ваш<br>кадр<br>здесь →</strong></div>
+      <div class="cap"><span class="kind mono">Напишите нам</span><h3>Обсудить ролик</h3></div>
+    </a>
+    <article class="card more" tabindex="0" data-r="h" data-video="video/timelapse.mp4">
+      <div class="media"><video src="video/timelapse.mp4" poster="video/timelapse.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:07</span></div>
+        <div class="m-bot mono"><span>Девелопмент</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Девелопмент</span><h3>От пустого участка до готового квартала за 7 секунд</h3></div>
+    </article>
+    <article class="card more" tabindex="0" data-r="h" data-video="video/manor.mp4">
       <div class="media"><video src="video/manor.mp4" poster="video/manor.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>16:9</span><span>00:00:14</span></div>
         <div class="m-bot mono"><span>Историческое кино</span><span>AI</span></div></div>
-      <span class="kind mono">Историческое кино</span><h3>Усадьба: от пустого поля до дворца за 14 секунд</h3>
+      <div class="cap"><span class="kind mono">Историческое кино</span><h3>Усадьба: от пустого поля до дворца за 14 секунд</h3></div>
     </article>
-    <a class="card card-cta" data-r="v" href="#contact">
-      <div class="media"><span class="mono">Следующий ролик</span><strong>Ваш<br>кадр<br>здесь →</strong></div>
-      <span class="kind mono">Напишите нам</span><h3>Обсудить ролик</h3>
-    </a>
   </div>
-  <div class="wrap"><div class="reel-progress"><b id="reelBar"></b></div></div>
+  <div class="reel-more"><button class="btn btn-ghost magnetic" type="button" id="reelMore">Показать все работы <span class="mono">19</span></button></div>
+  </div>
 </section>
 
 <!-- MARQUEE -->
@@ -1070,23 +1082,18 @@ const words = splitWords($('[data-words]'));
 gsap.fromTo(words, { opacity: .13 }, { opacity: 1, stagger: .1, ease: 'none',
   scrollTrigger: { trigger: '.manifesto', start: 'top 70%', end: 'bottom 55%', scrub: true } });
 
-/* reel horizontal scroll */
-const track = $('#track');
-const dist = () => Math.max(0, track.scrollWidth - innerWidth);
-/* wide screens: vertical scroll drives the reel sideways; phones keep a native swipe carousel */
-gsap.matchMedia().add('(min-width: 768px)', () => {
-  document.documentElement.classList.add('reel-pin');
-  gsap.to(track, { x: () => -dist(), ease: 'none',
-    scrollTrigger: { trigger: '#reel', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: .8, invalidateOnRefresh: true,
-      onUpdate: s => $('#reelBar').style.transform = `scaleX(${s.progress})` } });
-  return () => document.documentElement.classList.remove('reel-pin');
+/* reel grid: tiles rise in reading order as they enter; the rest of the reel opens on demand */
+const grid = $('#track');
+const rise = els => gsap.fromTo(els, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: E, stagger: .07, overwrite: true });
+if (!reduce) {
+  gsap.set('.reel-grid .card', { y: 48, opacity: 0 });
+  ScrollTrigger.batch('.reel-grid .card:not(.more)', { start: 'top 90%', once: true, onEnter: rise });
+}
+$('#reelMore').addEventListener('click', () => {
+  grid.classList.add('open');
+  ScrollTrigger.refresh();
+  if (!reduce) rise($$('.reel-grid .card.more'));
 });
-track.addEventListener('scroll', () => {
-  const m = track.scrollWidth - track.clientWidth;
-  if (m > 0) $('#reelBar').style.transform = `scaleX(${track.scrollLeft / m})`;
-}, { passive: true });
-$$('.card').forEach((c, i) => gsap.from(c, { y: 60 + (i % 3) * 30, opacity: 0, duration: 1.2, ease: E,
-  scrollTrigger: { trigger: '#reel', start: 'top 75%', once: true }, delay: Math.min(i, 3) * .08 }));
 
 /* pipeline pin */
 setPipe(0);
