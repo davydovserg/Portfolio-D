@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-пульт собственника</title>
+  <meta name="description" content="Демо-стенд: 90 дней внедрения AI-пульта, ветки решений, риски и прогноз против факта.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="demo-banner">Демо-стенд · компании, города и суммы вымышлены</div>
+
+  <header class="top">
+    <div class="brand">
+      <div class="logo"><span>П</span><i></i></div>
+      <div>
+        <h1>AI-пульт собственника</h1>
+        <div class="muted" id="groupName"></div>
+      </div>
+    </div>
+    <div class="top__actions">
+      <button class="btn btn--primary" id="apStart">▶ Автопилот 90 дней</button>
+      <button class="btn" id="shareBtn" title="Скопировать ссылку на ваш сценарий">Поделиться</button>
+      <button class="btn btn--ghost" id="resetBtn" title="Сбросить все решения">Сбросить</button>
+    </div>
+  </header>
+
+  <section class="counters" id="counters" aria-live="polite"></section>
+
+  <section class="timeline-wrap">
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <section class="hero" id="hero"></section>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="cockpit">Пульт</button>
+    <button role="tab" data-tab="decisions">Решения <b class="badge" id="decBadge"></b></button>
+    <button role="tab" data-tab="tree">Дерево событий</button>
+    <button role="tab" data-tab="system">Как работает система</button>
+    <button role="tab" data-tab="group">Группа</button>
+    <button role="tab" data-tab="report">Итог</button>
+  </nav>
+
+  <main>
+    <section class="panel" id="tab-cockpit"></section>
+    <section class="panel" id="tab-decisions" hidden></section>
+    <section class="panel" id="tab-tree" hidden></section>
+    <section class="panel" id="tab-system" hidden></section>
+    <section class="panel" id="tab-group" hidden></section>
+    <section class="panel" id="tab-report" hidden></section>
+  </main>
+
+  <footer class="foot muted" id="sources"></footer>
+
+  <div class="swan" id="swan" hidden></div>
+
+  <div class="apbar" id="apbar" hidden>
+    <div class="apbar__progress"><i id="apProgress"></i></div>
+    <div class="apbar__row">
+      <span class="apbar__day" id="apDay">День 0</span>
+      <span class="apbar__cap" id="apCap"></span>
+      <div class="apbar__btns">
+        <button class="btn btn--sm" id="apSpeed">1×</button>
+        <button class="btn btn--sm" id="apPause">❚❚</button>
+        <button class="btn btn--sm btn--ghost" id="apStop">Стоп</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
