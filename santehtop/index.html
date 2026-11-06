@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сантехтоп: первый экран с видео</title>
+<meta name="description" content="Первый экран и ИИ-видео с настоящими ваннами из каталога santehtop.ru.">
+<style>
+html,body{margin:0;background:#fff;color:#2b1a05;font-family:Arial,sans-serif}
+.pf-note{display:flex;justify-content:space-between;gap:16px;width:min(1240px,calc(100% - 32px));margin:0 auto;padding:18px 0 0;font-size:15px;line-height:1.4}
+.pf-note a{color:inherit;text-underline-offset:3px}
+@media (max-width:768px){.pf-note{padding-bottom:14px}.pf-note span{display:none}}
+</style></head><body>
+<div class="pf-note"><a href="../#portfolio">← В портфолио</a><span>Первый экран для santehtop.ru: ИИ-видео и вёрстка блока</span></div>
+<style>
+@font-face{font-family:"Cormorant";font-weight:500;font-display:swap;src:url("fonts/cormorant-500-cyrillic.woff2") format("woff2");unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:"Cormorant";font-weight:500;font-display:swap;src:url("fonts/cormorant-500-latin.woff2") format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+.st-hero{position:relative;width:min(1240px,calc(100% - 32px));margin:30px auto 0;height:calc(100svh - 216px);min-height:420px;max-height:690px;border-radius:30px;overflow:hidden;background:#16100a;color:#fff;font-family:"PT Root UI",Arial,sans-serif}
+.st-hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%}
+.st-hero__scrim{position:absolute;inset:auto 0 0;height:60%;background:linear-gradient(to top,rgba(14,9,3,.9) 0%,rgba(14,9,3,.76) 42%,rgba(14,9,3,.45) 70%,rgba(14,9,3,0) 100%);transition:opacity .45s ease}
+.st-hero__in{position:absolute;left:48px;right:48px;bottom:40px;display:flex;justify-content:space-between;align-items:flex-end;gap:40px;transition:opacity .45s ease,transform .45s ease}
+.st-hero h1{margin:0 0 18px;font-family:"Cormorant",Georgia,serif;font-size:clamp(44px,min(5.6vw,11svh),80px);line-height:.96;font-weight:500;letter-spacing:-.015em;color:#fff;white-space:nowrap}
+.st-hero p{margin:0;font-size:20px;line-height:1.4;color:#fff}
+.st-hero__in>div{min-width:0}
+.st-hero__go{flex:none;display:inline-flex;align-items:center;gap:18px;height:64px;padding:0 10px 0 30px;border-radius:999px;background:#f6efe2;color:#2b1a05;font-size:18px;font-weight:500;text-decoration:none;transition:transform .2s ease,background .2s ease}
+.st-hero__go:hover{background:#fff;transform:translateY(2px)}
+.st-hero__go:focus-visible{outline:3px solid #089ff8;outline-offset:3px}
+.st-hero__go svg{box-sizing:content-box;width:16px;height:16px;padding:14px;border-radius:50%;background:#2b1a05;color:#f6efe2;transition:transform .2s ease}
+.st-hero__go:hover svg{transform:translateY(3px)}
+.st-hero.is-logo .st-hero__scrim{opacity:0}
+.st-hero.is-logo .st-hero__in{opacity:0;transform:translateY(10px);pointer-events:none}
+.st-hero__in>*{animation:st-rise .8s cubic-bezier(.2,.7,.2,1) both}
+.st-hero__in>a{animation-delay:.18s}
+@keyframes st-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.st-hero__in>*{animation:none}}
+@media (max-width:768px){
+.st-hero{width:100%;margin:0;height:auto;min-height:0;max-height:none;border-radius:0}
+.st-hero__video{position:static;display:block;height:auto;aspect-ratio:720/654}
+.st-hero__scrim{display:none}
+.st-hero__in{position:static;display:block;padding:18px 16px 24px}
+.st-hero h1{font-size:min(36px,9.6vw);line-height:1;margin-bottom:12px;white-space:nowrap}
+.st-hero p{font-size:17px;margin-bottom:14px}
+.st-hero__go{display:flex;justify-content:space-between;width:100%;height:60px;padding:0 8px 0 24px}
+.st-hero.is-logo .st-hero__in{opacity:1;transform:none;pointer-events:auto}
+}
+</style>
+<section class="st-hero" id="st-hero" aria-label="Сантехтоп">
+  <video class="st-hero__video" autoplay muted loop playsinline preload="auto" poster="../video/santehtop.jpg" aria-hidden="true"
+    data-desktop="../video/santehtop.mp4" data-mobile="../video/santehtop-mobile.mp4"></video>
+  <div class="st-hero__scrim"></div>
+  <div class="st-hero__in">
+    <div>
+      <h1>Сантехника, которая<br>становится интерьером</h1>
+      <p>Ванны, смесители и мебель на заказ в любом цвете RAL и NCS. Только оригинальные бренды, с 1999 года.</p>
+    </div>
+    <a class="st-hero__go" href="https://www.santehtop.ru/" target="_blank" rel="noopener">Смотреть, что в магазине
+      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2v13M3.5 9.5 9 15l5.5-5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+<script>
+(function(){
+  var hero=document.getElementById('st-hero'),v=hero.querySelector('video'),LOGO_FROM=11.04;
+  var phone=matchMedia('(max-width:768px)').matches;
+  v.src=phone?v.dataset.mobile:v.dataset.desktop;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){v.removeAttribute('autoplay');v.pause();}
+  v.addEventListener('timeupdate',function(){hero.classList.toggle('is-logo',v.currentTime>=LOGO_FROM);});
+  hero.querySelector('.st-hero__go').addEventListener('click',function(e){
+    var t=document.getElementById('block_ihelp');if(!t)return;e.preventDefault();
+    var y=t.getBoundingClientRect().top+scrollY-(document.querySelector('.snt-h')||{offsetHeight:0}).offsetHeight-16;
+    scrollTo({top:y,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+  });
+})();
+</script>
+
+</body></html>

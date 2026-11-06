@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Видеоаналитика на производстве — KADR studio</title>
+<meta name="description" content="Нейросети подключаются к уже установленным камерам и сообщают о нарушениях, простоях, падениях и возгораниях. Пилот от 1 месяца.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Видеоаналитика на производстве — KADR studio">
+<meta property="og:description" content="Камеры уже стоят. Научим их видеть: СИЗ, опасные зоны, пожар, склад, простои.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/fall-after.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23ff3b24'/%3E%3Cpath d='M7 4v16M17 4l-8 8 8 8' fill='none' stroke='%23060606' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+
+<header class="nav">
+  <a class="mark" href="#top" aria-label="KADR studio, в начало"><b>KADR</b> studio</a>
+  <nav aria-label="Разделы">
+    <a href="#pult">Пульт</a>
+    <a href="#zones">Что видит</a>
+    <a href="#how">Как работает</a>
+    <a href="#price">Стоимость</a>
+  </nav>
+  <a class="btn btn-sm" href="#contact">Консультация</a>
+</header>
+
+<main id="main">
+
+<section class="wall" id="top">
+  <div class="l" aria-hidden="true">K</div>
+  <figure data-ui class="t"><img src="assets/img/machine.jpg" width="598" height="399" alt="Оператор у станка в рамках детектора" fetchpriority="high"><figcaption>Станок</figcaption></figure>
+  <div class="l l2" aria-hidden="true">A</div>
+  <figure data-ui data-det="fall" class="t alarm"><img src="assets/img/fall-clean.jpg" width="1600" height="893" alt="Сотрудник упал на рабочей площадке, система выделила его красной рамкой"><figcaption>Падение</figcaption></figure>
+  <div class="l" aria-hidden="true">D</div>
+  <div class="l l2" aria-hidden="true">R</div>
+
+  <figure data-ui class="t"><img src="assets/img/flame.jpg" width="640" height="360" alt="Система выделила пламя на территории"><figcaption>Пожар</figcaption></figure>
+  <div class="head">
+    <h1>Камеры уже стоят. Научим их видеть.</h1>
+    <p>Видеоаналитика для производств и складов: нейросети на ваших камерах сообщают о нарушениях, простоях и возгораниях.</p>
+  </div>
+  <figure data-ui class="t"><img src="assets/img/conveyor-b.jpg" width="704" height="486" alt="Коробки на конвейере проходят контрольные зоны"><figcaption>Склад</figcaption></figure>
+
+  <figure data-ui data-det="rotor" class="t"><img src="assets/img/rig-rotor.jpg" width="620" height="440" alt="Контур опасной зоны вокруг ротора на буровой"><figcaption>Опасная зона</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/car-zone.jpg" width="640" height="360" alt="Автомобиль в контролируемой зоне"><figcaption>Периметр</figcaption></figure>
+  <figure data-ui class="t"><img src="assets/img/ppe-office.jpg" width="572" height="360" alt="Сотрудник надевает каску, система отслеживает СИЗ"><figcaption>Каска</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/smoke.jpg" width="675" height="450" alt="Склад сверху, сигнал о дыме"><figcaption>Дым</figcaption></figure>
+  <figure data-ui data-det="rig" class="t"><img src="assets/img/rig-floor.jpg" width="1600" height="893" alt="Рабочие на буровой, система отмечает каски"><figcaption>СИЗ</figcaption></figure>
+  <figure data-ui class="t"><img src="assets/img/factory.jpg" width="936" height="624" alt="Цех, система выделила двух сотрудников в жилетах"><figcaption>Цех</figcaption></figure>
+
+  <figure data-ui class="t x"><img src="assets/img/operator.jpg" width="598" height="446" alt="Сотрудник на производственной линии"><figcaption>Линия</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/zone-red.jpg" width="444" height="360" alt="Контроль закрытой зоны"><figcaption>Закрытая зона</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/aerial.jpg" width="640" height="360" alt="Территория объекта с воздуха"><figcaption>Территория</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/synopsis-b.jpg" width="640" height="360" alt="Запись камеры на территории"><figcaption>Архив</figcaption></figure>
+  <figure data-ui class="t x"><img src="assets/img/conveyor-a.jpg" width="640" height="360" alt="Конвейер сверху"><figcaption>Отгрузка</figcaption></figure>
+  <a class="go" href="#contact">Обсудить пилот ↗</a>
+</section>
+
+<section class="pult" id="pult">
+  <div class="pult-text">
+    <h2 class="r">Включите любой экран</h2>
+    <p class="big r">Так выглядит работа системы: кадр, детектор и событие в&nbsp;журнале. Выберите сценарий и&nbsp;посмотрите, что попадёт оператору.</p>
+    <a class="btn btn-ink r" href="#contact">Обсудить пилот</a>
+  </div>
+  <div class="console r" data-ui id="console">
+    <div class="c-stage">
+      <div class="c-frame" id="c-frame">
+        <img id="c-img" src="assets/img/machine.jpg" width="598" height="399" loading="lazy" alt="Кадр с камеры: оператор у станка, система выделила человека, каску и рабочую зону">
+      </div>
+      <div class="c-bar">
+        <span class="c-rec"><i></i><span id="c-cam">Цех · станок</span></span>
+        <span id="c-clock" class="c-clock">--:--:--</span>
+      </div>
+    </div>
+    <div class="c-side">
+      <div class="c-head"><strong>Журнал событий</strong><span>демо</span></div>
+      <ol class="c-feed" id="c-feed" aria-live="polite">
+        <li><b>Оператор на месте</b><span>Время операции замеряется</span></li>
+        <li><b>Сверка отгрузки</b><span>Сравнение с накладной и заказом</span></li>
+        <li><b>Человек в опасной зоне</b><span>Сотрудник внутри контура</span></li>
+        <li><b>Нет средства защиты</b><span>Событие о нарушении</span></li>
+      </ol>
+    </div>
+    <div class="c-tabs" id="c-tabs" role="group" aria-label="Выберите сценарий">
+      <button type="button" data-s="0" aria-pressed="true">Станок</button>
+      <button type="button" data-s="1" aria-pressed="false">СИЗ</button>
+      <button type="button" data-s="2" aria-pressed="false">Опасная зона</button>
+      <button type="button" data-s="3" aria-pressed="false">Падение</button>
+      <button type="button" data-s="4" aria-pressed="false">Пожар</button>
+      <button type="button" data-s="5" aria-pressed="false">Склад</button>
+      <button type="button" data-s="6" aria-pressed="false">Транспорт</button>
+    </div>
+  </div>
+</section>
+
+<section class="pains" id="pains">
+  <div class="pains-pic r"><img src="assets/img/lens.jpg" width="868" height="743" loading="lazy" alt="Объектив камеры видеонаблюдения крупным планом"></div>
+  <div class="pains-red">
+    <h2 class="r">Камера записала, но&nbsp;не&nbsp;вмешалась</h2>
+    <p class="big r">Обычное видеонаблюдение показывает, что произошло. Проактивная аналитика сообщает об&nbsp;этом сразу, пока ситуацию можно исправить.</p>
+  </div>
+  <div class="pains-list">
+    <h3 class="r">С чем сталкивается промышленность</h3>
+    <ul class="points r">
+      <li><b>Простои</b>Неэффективность и&nbsp;остановки производства</li>
+      <li><b>Травмы</b>Несчастные случаи на&nbsp;рабочих местах</li>
+      <li><b>Нет контроля</b>Подрядчики и&nbsp;сотрудники без объективной проверки качества работ</li>
+      <li><b>Поломки</b>Выход из&nbsp;строя дорогостоящего оборудования</li>
+    </ul>
+  </div>
+  <div class="pains-list pains-fit">
+    <h3 class="r">Решение подойдёт, если</h3>
+    <ul class="points r">
+      <li><b>Камеры уже есть</b>На&nbsp;предприятии установлена система видеонаблюдения</li>
+      <li><b>Важна эффективность</b>Нужно снизить простои и&nbsp;улучшить бизнес-процессы</li>
+      <li><b>Важна безопасность</b>Нужны протоколы для нештатных ситуаций и&nbsp;соблюдение техники безопасности</li>
+    </ul>
+  </div>
+</section>
+
+<section class="areas" id="areas">
+  <h2 class="areas-title r">Четыре зоны контроля на&nbsp;объекте</h2>
+
+  <article class="area">
+    <div class="area-text">
+      <h3 class="r">Эффективность производства</h3>
+      <dl class="r">
+        <div><dt>Оптимизация процессов</dt><dd>Автоматический замер времени на&nbsp;задачи и&nbsp;поиск неэффективных этапов</dd></div>
+        <div><dt>Идентификация простоев</dt><dd>Простои оборудования и&nbsp;людей для последующей оптимизации</dd></div>
+        <div><dt>Сравнение план-факт</dt><dd>Расхождения между запланированным и&nbsp;фактическим временем выполнения</dd></div>
+        <div><dt>Анализ продуктивности</dt><dd>Отчёты об&nbsp;эффективности сотрудников и&nbsp;всей команды</dd></div>
+      </dl>
+    </div>
+    <figure class="area-pic"><img src="assets/img/operator.jpg" width="598" height="446" loading="lazy" alt="Сотрудник на производственной линии в рамке детектора"></figure>
+  </article>
+
+  <article class="area area-rev">
+    <figure class="area-pic"><img src="assets/img/conveyor-b.jpg" width="704" height="486" loading="lazy" alt="Коробки на конвейере с разметкой контрольных зон"></figure>
+    <div class="area-text">
+      <h3 class="r">Складские операции</h3>
+      <dl class="r">
+        <div><dt>Видеоанализ приёмки</dt><dd>Соответствие продукции накладным и&nbsp;заявленным параметрам</dd></div>
+        <div><dt>Контроль отгрузки</dt><dd>Сверка отгружаемых товаров с&nbsp;заказами и&nbsp;учётной системой</dd></div>
+        <div><dt>Идентификация нарушений</dt><dd>Попытки хищений, включая вынос продукции вне разрешённых зон</dd></div>
+        <div><dt>Оптимизация процессов</dt><dd>Контроль упаковки, сборки и&nbsp;погрузочно-разгрузочных работ</dd></div>
+      </dl>
+    </div>
+  </article>
+
+  <article class="area">
+    <div class="area-text">
+      <h3 class="r">Безопасность периметра</h3>
+      <dl class="r">
+        <div><dt>Распознавание номеров</dt><dd>Автоматическая идентификация транспорта на&nbsp;въезде и&nbsp;выезде</dd></div>
+        <div><dt>Выявление нарушений</dt><dd>Транспорт вне разрешённых зон: парковки, загрузочные площадки</dd></div>
+        <div><dt>Скорость движения</dt><dd>Мониторинг скоростного режима на&nbsp;территории объекта</dd></div>
+        <div><dt>Интеграция с&nbsp;контролем</dt><dd>Подключение к&nbsp;существующим системам управления доступом</dd></div>
+      </dl>
+    </div>
+    <figure class="area-pic"><img src="assets/img/car-zone.jpg" width="640" height="360" loading="lazy" alt="Автомобиль в контролируемой зоне, система считает машины"></figure>
+  </article>
+
+  <article class="area area-rev">
+    <figure class="area-pic"><img src="assets/img/smoke.jpg" width="675" height="450" loading="lazy" alt="Склад сверху: система подала сигнал о дыме"></figure>
+    <div class="area-text">
+      <h3 class="r">Пожарная безопасность</h3>
+      <dl class="r">
+        <div><dt>Раннее обнаружение</dt><dd>Дым и&nbsp;пламя выявляются быстрее традиционных датчиков</dd></div>
+        <div><dt>Автоматизация реагирования</dt><dd>События для системы управления зданием и&nbsp;оповещения сотрудников</dd></div>
+        <div><dt>Контроль путей эвакуации</dt><dd>Препятствия и&nbsp;соблюдение маршрутов эвакуации</dd></div>
+        <div><dt>Регулярный мониторинг</dt><dd>Постоянное сканирование помещений на&nbsp;опасные ситуации</dd></div>
+      </dl>
+    </div>
+  </article>
+</section>
+
+<section class="zones" id="zones">
+  <div class="zones-note">
+    <h2 class="r">Люди в&nbsp;кадре</h2>
+    <p class="r">Система замечает человека в&nbsp;опасной зоне, отсутствие каски, очков, жилета или перчаток и&nbsp;падение, а&nbsp;затем формирует событие.</p>
+    <div class="rates r">
+      <p><b>93%</b><span>качество распознавания каски</span></p>
+      <p><b>87%</b><span>качество распознавания очков</span></p>
+    </div>
+  </div>
+  <figure data-ui data-det="fall" class="t z-big"><img src="assets/img/fall-clean.jpg" width="1600" height="893" loading="lazy" alt="Система выделила упавшего сотрудника красной рамкой"><figcaption>Падение: событие о нештатной ситуации</figcaption></figure>
+  <figure data-ui data-det="rotor" class="t"><img src="assets/img/rig-rotor.jpg" width="620" height="440" loading="lazy" alt="Контур опасной зоны вокруг ротора"><figcaption>Опасная зона</figcaption></figure>
+  <figure data-ui data-det="crew" class="t"><img src="assets/img/rig-crew.jpg" width="770" height="600" loading="lazy" alt="Двое рабочих в касках на буровой"><figcaption>СИЗ на объекте</figcaption></figure>
+  <figure data-ui class="t"><img src="assets/img/ppe-office.jpg" width="572" height="360" loading="lazy" alt="Сотрудник надевает каску"><figcaption>Каска</figcaption></figure>
+  <figure data-ui class="t"><img src="assets/img/zone-red.jpg" width="444" height="360" loading="lazy" alt="Контроль присутствия сотрудника в закрытой зоне"><figcaption>Закрытая зона</figcaption></figure>
+  <figure data-ui data-det="worker" class="t"><img src="assets/img/rig-worker.jpg" width="580" height="440" loading="lazy" alt="Рабочий в каске и перчатках на буровой"><figcaption>Каска, перчатки</figcaption></figure>
+  <figure data-ui class="t"><img src="assets/img/zone-steam.jpg" width="476" height="360" loading="lazy" alt="Сотрудник при слабой видимости, рядом пар"><figcaption>Перемещение</figcaption></figure>
+</section>
+
+<section class="syn" id="synopsis">
+  <div class="syn-stage">
+    <div class="syn-text">
+      <h2>24 часа видео за&nbsp;24&nbsp;минуты</h2>
+      <div class="syn-steps">
+        <p class="on"><b>Сутки записи.</b> Точный момент инцидента находится анализом видеоархива, без ручного просмотра.</p>
+        <p><b>Только события.</b> Технология Video Synopsis собирает всё важное из&nbsp;многочасовой записи в&nbsp;сжатый отчёт.</p>
+        <p><b>Готовая доказательная база.</b> Отчёты и&nbsp;протоколы создаются автоматически и&nbsp;обеспечивают прозрачность внутренних проверок.</p>
+      </div>
+    </div>
+    <div class="syn-ui" data-ui>
+      <div class="syn-frames">
+        <img src="assets/img/synopsis-b.jpg" width="640" height="360" loading="lazy" alt="Запись камеры на территории: система отмечает людей">
+        <img src="assets/img/synopsis-a.jpg" width="480" height="360" loading="lazy" alt="Запись камеры в помещении с выделенными объектами">
+      </div>
+      <div class="syn-tl">
+        <div class="syn-row"><span>Длительность</span><strong id="syn-time">24:00:00</strong></div>
+        <div class="syn-track" id="syn-track"><i class="syn-fill" id="syn-fill"></i></div>
+        <div class="syn-row sm"><span>00:00</span><span id="syn-state">Исходная запись</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scen" id="scen">
+  <h2 class="scen-title r">Три сценария внедрения</h2>
+  <article class="s-card">
+    <img class="r" src="assets/img/warehouse.jpg" width="628" height="831" loading="lazy" alt="Проход между стеллажами на складе">
+    <div>
+      <h3 class="r">Склад и&nbsp;логистика</h3>
+      <p class="r">Нейросеть и&nbsp;логика обучаются на&nbsp;ваших данных: курение в&nbsp;неположенном месте, дым и&nbsp;пламя, сверка паллет с&nbsp;накладной в&nbsp;учётной системе.</p>
+    </div>
+  </article>
+  <article class="s-card">
+    <img class="r" src="assets/img/rig-floor.jpg" width="1600" height="893" loading="lazy" alt="Рабочая площадка буровой установки">
+    <div>
+      <h3 class="r">Опасное производство</h3>
+      <p class="r">Обучение на&nbsp;вашем видеоархиве: СИЗ и&nbsp;нештатные ситуации. Интеграция с&nbsp;громкоговорящей связью и&nbsp;телефонией.</p>
+    </div>
+  </article>
+  <article class="s-card">
+    <img class="r" src="assets/img/aerial.jpg" width="640" height="360" loading="lazy" alt="Территория объекта с воздуха">
+    <div>
+      <h3 class="r">Патрулирование с&nbsp;дрона</h3>
+      <p class="r">Дрон с&nbsp;камерой летает по&nbsp;заданной траектории. Нейросети в&nbsp;реальном времени фиксируют препятствия на&nbsp;путях эвакуации, нарушения парковки, задымление и&nbsp;открытое горение.</p>
+    </div>
+  </article>
+</section>
+
+<section class="how" id="how">
+  <h2 class="how-title r">Камера, сервер, отчёт</h2>
+  <article class="how-step">
+    <img class="r" src="assets/img/camera-wall.jpg" width="963" height="1506" loading="lazy" alt="Камера видеонаблюдения на стене промышленного здания">
+    <p class="r"><b>Сначала камера.</b> Подключаем ту, что уже работает на&nbsp;объекте: она направляет видеопоток на&nbsp;сервер. Система строится на&nbsp;микросервисах и&nbsp;легко интегрируется с&nbsp;любым видеонаблюдением.</p>
+  </article>
+  <article class="how-step">
+    <img class="r" src="assets/img/dome.jpg" width="1413" height="1219" loading="lazy" alt="Купольная камера над производственной линией">
+    <p class="r"><b>Затем анализ.</b> Алгоритмы машинного зрения ведут мониторинг без прямого участия человека. Функции подключаются модулями, а&nbsp;привычный интерфейс сохраняется, без дополнительных окон.</p>
+  </article>
+  <article class="how-step">
+    <img class="r" src="assets/img/factory.jpg" width="936" height="624" loading="lazy" alt="Цех: система выделила двух сотрудников в жилетах">
+    <p class="r"><b>В конце отчёт.</b> Посещаемость, загрузка зон, безопасность, процессы и&nbsp;логистика формируются автоматически: на&nbsp;почту, в&nbsp;мессенджеры или в&nbsp;ваши системы отчётности.</p>
+  </article>
+  <div class="open">
+    <h3 class="r">Открытая архитектура</h3>
+    <p class="r">Реализуйте свои сценарии: обучайте и&nbsp;подключайте собственные нейродетекторы. Стек: C++, Python, Flutter, Angular, PostgreSQL, RabbitMQ.</p>
+  </div>
+</section>
+
+<section class="price" id="price">
+  <div class="price-wrap r">
+    <table class="ptable">
+      <thead>
+        <tr>
+          <th scope="col" class="p-title"><h2>Стоимость и&nbsp;сроки</h2></th>
+          <th scope="col" class="p-rec"><span class="p-name">Пилот</span><span class="p-sum">от 1 млн ₽</span></th>
+          <th scope="col"><span class="p-name">Полное развёртывание</span><span class="p-sum">3–10 млн ₽</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Срок</th><td class="p-rec">От 1 месяца</td><td>2–3 месяца</td></tr>
+        <tr><th scope="row">Масштаб</th><td class="p-rec">Проверка задачи на&nbsp;вашем объекте</td><td>Развёртывание на&nbsp;производстве</td></tr>
+        <tr><th scope="row">Задачи</th><td class="p-rec">Неэффективность персонала, качество техпроцессов, отказы оборудования, план-факт</td><td>Набор детекторов и&nbsp;отчётов под специфику производства</td></tr>
+        <tr class="p-cta"><th scope="row"><span class="sr">Заявка</span></th><td class="p-rec"><a class="btn btn-ink" href="#contact" data-task="Пилотный проект">Обсудить пилот</a></td><td><a class="btn btn-dark" href="#contact" data-task="Полное развёртывание">Запросить расчёт</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <h2 class="r">Частые вопросы</h2>
+  <div class="faq-list">
+    <details name="q" open class="r"><summary>Нужно ли менять камеры?</summary><p>Решение рассчитано на&nbsp;предприятия, где видеонаблюдение уже установлено, и&nbsp;интегрируется с&nbsp;существующими системами. Конкретный объект проверяем на&nbsp;консультации.</p></details>
+    <details name="q" class="r"><summary>Придётся ли осваивать новую программу?</summary><p>Нет. Благодаря модульному подходу функции аналитики встраиваются с&nbsp;сохранением привычного интерфейса, без дополнительных окон.</p></details>
+    <details name="q" class="r"><summary>Насколько точно распознаются СИЗ?</summary><p>Качество распознавания каски составляет 93%, очков — 87%. Система также определяет отсутствие жилета и&nbsp;перчаток.</p></details>
+    <details name="q" class="r"><summary>Можно ли обучить систему нашим сценариям?</summary><p>Да. Нейросети обучаются на&nbsp;видеоархиве и&nbsp;данных заказчика. Благодаря открытой архитектуре можно подключать и&nbsp;собственные нейродетекторы.</p></details>
+    <details name="q" class="r"><summary>С какими системами есть интеграция?</summary><p>Системы управления доступом и&nbsp;зданием, учётные системы, громкоговорящая связь и&nbsp;телефония. Другие интеграции обсуждаются под задачу.</p></details>
+    <details name="q" class="r"><summary>Что такое Video Synopsis?</summary><p>Технология сжатия времени: она может превратить 24 часа видео в&nbsp;24 минуты полезной информации и&nbsp;собрать события в&nbsp;сжатый отчёт.</p></details>
+    <details name="q" class="r"><summary>Сколько стоит и&nbsp;сколько займёт?</summary><p>Пилот: от&nbsp;1 месяца и&nbsp;от&nbsp;1 млн рублей. Полное развёртывание на&nbsp;производстве: 2–3 месяца и&nbsp;3–10 млн рублей.</p></details>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <figure data-ui class="t cta-pic"><img src="assets/img/flame.jpg" width="640" height="360" loading="lazy" alt="Детектор выделил пламя на объекте"><figcaption>Пожар</figcaption></figure>
+  <div class="cta-main">
+    <h2 class="r">Обсудите задачу с&nbsp;IT-архитектором</h2>
+    <p class="r">Консультация бесплатная. Расскажите про объект и&nbsp;камеры: ответим по&nbsp;вашему запросу.</p>
+    <form class="form r" id="lead">
+      <div><label for="f-name">Имя</label><input id="f-name" name="name" autocomplete="name" required></div>
+      <div><label for="f-contact">Телефон или почта</label><input id="f-contact" name="contact" autocomplete="email" required></div>
+      <div><label for="f-task">Задача</label>
+      <select id="f-task" name="task">
+        <option>Пилотный проект</option>
+        <option>Полное развёртывание</option>
+        <option>Промышленная безопасность и СИЗ</option>
+        <option>Эффективность производства</option>
+        <option>Складские операции</option>
+        <option>Пожарная безопасность</option>
+        <option>Свой сценарий</option>
+      </select></div>
+      <button class="btn btn-ink" type="submit">Подготовить заявку</button>
+      <p class="form-note" id="form-note">Откроется ваша почта с&nbsp;готовым письмом.</p>
+    </form>
+  </div>
+  <figure data-ui class="t cta-pic"><img src="assets/img/dome.jpg" width="1413" height="1219" loading="lazy" alt="Купольная камера над производством"><figcaption>Цех</figcaption></figure>
+</section>
+
+</main>
+
+<footer class="foot">
+  <span>KADR studio, видеоаналитика на производстве</span>
+  <span class="foot-links"><a href="#pult">Пульт</a><a href="#price">Стоимость</a><a href="#top">Наверх</a></span>
+  <span class="foot-r">Концепт сайта, кадры демонстрационные · 2026 · Сергей</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

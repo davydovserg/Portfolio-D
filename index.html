@@ -302,9 +302,9 @@ a{color:inherit;text-decoration:none}
 .pf-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--ink-3);border-bottom:1px solid var(--line)}
 .pf-bar i{width:8px;height:8px;border-radius:50%;background:var(--line-2)}
 .pf-bar span{margin-left:8px;font:500 11px/1 var(--f-mono);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pf-shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}
+.pf-shot img,.pf-shot video{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}
 .pf:hover .pf-shot{transform:translateY(-6px);box-shadow:0 0 0 1px var(--tungsten),0 30px 60px -30px rgba(255,138,61,.4)}
-.pf:hover .pf-shot img{transform:scale(1.04)}
+.pf:hover .pf-shot img,.pf:hover .pf-shot video{transform:scale(1.04)}
 .pf-meta .mono{color:var(--tungsten-2)}
 .pf-meta h3{font:600 clamp(17px,1.4vw,20px)/1.25 var(--f-display);letter-spacing:-.02em;margin:6px 0 0}
 .pf-meta p{margin:8px 0 0;color:var(--mute);font-size:15px;max-width:46ch}
@@ -317,7 +317,7 @@ a{color:inherit;text-decoration:none}
 .pf-gh span{font:500 17px/1.35 var(--f-body);max-width:24ch}
 .pf-gh i{font:300 40px/1 var(--f-display);font-style:normal;transition:transform .5s var(--ease)}
 .pf-gh:hover i{transform:translateX(10px) rotate(-45deg)}
-@media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense}}
 .pf-wide{grid-column:span 2}
 .pf-wide .pf-meta p{max-width:70ch}
 @media (max-width:640px){.pf-grid{grid-template-columns:1fr}.pf-app,.pf-wide{grid-column:auto}.pf-app{flex-direction:column;align-items:flex-start}}
@@ -552,13 +552,19 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <div class="m-bot mono"><span>Реклама</span><span>AI</span></div></div>
       <div class="cap"><span class="kind mono">Реклама</span><h3>Bella: косметологический аппарат, который дарят в ресторане</h3></div>
     </article>
-    <article class="card more" tabindex="0" data-r="v" data-video="video/project-v-ad.mp4">
+    <article class="card" data-size="xl" tabindex="0" data-r="h" data-video="video/santehtop.mp4">
+      <div class="media"><video src="video/santehtop.mp4" poster="video/santehtop.jpg" muted loop playsinline preload="none"></video>
+        <div class="m-top mono"><span>16:9</span><span>00:00:13</span></div>
+        <div class="m-bot mono"><span>Реклама для магазина</span><span>AI</span></div></div>
+      <div class="cap"><span class="kind mono">Реклама для магазина</span><h3>Сантехтоп: настоящие ванны из каталога в ролике для главной</h3></div>
+    </article>
+    <article class="card" tabindex="0" data-r="v" data-video="video/project-v-ad.mp4">
       <div class="media"><video src="video/project-v-ad.mp4" poster="video/project-v-ad.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:10</span></div>
         <div class="m-bot mono"><span>Продуктовая реклама</span><span>AI</span></div></div>
       <div class="cap"><span class="kind mono">Продуктовая реклама</span><h3>Путешествие внутрь организма для бренда витаминов</h3></div>
     </article>
-    <article class="card more" tabindex="0" data-r="v" data-video="video/fantasy.mp4">
+    <article class="card" tabindex="0" data-r="v" data-video="video/fantasy.mp4">
       <div class="media"><video src="video/fantasy.mp4" poster="video/fantasy.jpg" muted loop playsinline preload="none"></video>
         <div class="m-top mono"><span>9:16</span><span>00:00:11</span></div>
         <div class="m-bot mono"><span>Кино и клипы</span><span>AI</span></div></div>
@@ -605,7 +611,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
       <div class="cap"><span class="kind mono">Историческое кино</span><h3>Усадьба: от пустого поля до дворца за 14 секунд</h3></div>
     </article>
   </div>
-  <div class="reel-more"><button class="btn btn-ghost magnetic" type="button" id="reelMore">Показать все работы <span class="mono">19</span></button></div>
+  <div class="reel-more"><button class="btn btn-ghost magnetic" type="button" id="reelMore">Показать все работы <span class="mono">21</span></button></div>
   </div>
 </section>
 
@@ -730,6 +736,18 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
       <a class="pf" href="vremyakrasoty/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Время красоты</span></div><img src="work/vremyakrasoty.jpg" alt="Время красоты: премиум-сайт салона красоты с примерочной лака и онлайн-записью" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Салон красоты</span><h3>Время красоты: премиум-сайт салона с примерочной цвета и онлайн-записью</h3></div>
+      </a>
+      <a class="pf pf-wide" href="kadr-video/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Видеоаналитика KADR</span></div><img src="work/kadr-video.jpg" alt="Лендинг видеоаналитики: стена камер, система выделяет людей, пламя и опасные зоны" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Лендинг B2B-продукта</span><h3>Видеоаналитика на производстве: сайт как стена камер</h3><p>Кадры со станков, складов и буровых выглядят как настоящая диспетчерская, а рамки детектора прямо на экране находят падение, пламя и опасную зону.</p></div>
+      </a>
+      <a class="pf" href="ruslana/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Руслана Завалихина</span></div><img src="work/ruslana.jpg" alt="Сайт психолога Русланы Завалихиной: нить ведёт через страницу" loading="lazy"></div>
+        <div class="pf-meta"><span class="mono">Сайт психолога</span><h3>Руслана Завалихина: редизайн с концептом «Нить», которая ведёт через всю страницу</h3></div>
+      </a>
+      <a class="pf pf-wide" href="santehtop/" target="_blank" rel="noopener">
+        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>santehtop.ru</span></div><video src="video/santehtop.mp4" poster="video/santehtop.jpg" muted loop playsinline preload="none" aria-label="Ролик для главной Сантехтопа: модель среди ванн Abber"></video></div>
+        <div class="pf-meta"><span class="mono">ИИ-видео и первый экран</span><h3>Сантехтоп: видео на главную с настоящими ваннами из каталога</h3><p>Модель идёт к ваннам Abber, которые продаются в магазине. Меняются цвета и вода, в финале оживает логотип. Ролик встроен в первый экран под дизайн сайта.</p></div>
       </a>
       <a class="pf" href="https://davydovserg.github.io/lidery-ES/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>ЛЕАКИ</span></div><img src="work/leaci.jpg" alt="ЛЕАКИ: сайт международного делового клуба России, Китая и Евразии" loading="lazy"></div>
@@ -857,11 +875,11 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
     <p class="eyebrow mono">Контакты</p>
     <h2 class="contact-title" data-split>Сгенерируем <em>ваш кадр?</em></h2>
     <p class="contact-lead">Напишите, что вам нужно: ролик, сайт или приложение. Ответим с идеями и сметой.</p>
-    <!-- КОНТАКТЫ: замените на свои -->
+    <!-- КОНТАКТЫ -->
     <div class="contacts">
-      <a class="ct" href="https://t.me/your_telegram" target="_blank" rel="noopener"><span class="mono">Telegram</span><b>@DavydoV_Sss</b><i>→</i></a>
-      <a class="ct" href="https://wa.me/70000000000" target="_blank" rel="noopener"><span class="mono">WhatsApp</span><b>+7 962 003 12 86</b><i>→</i></a>
-      <a class="ct" href="mailto:you@example.com"><span class="mono">Почта</span><b>remindme-davydov-2027@mail.ru</b><i>→</i></a>
+      <a class="ct" href="https://t.me/DavydoV_Sss" target="_blank" rel="noopener"><span class="mono">Telegram</span><b>@DavydoV_Sss</b><i>→</i></a>
+      <a class="ct" href="https://wa.me/79620031286" target="_blank" rel="noopener"><span class="mono">WhatsApp</span><b>+7 962 003 12 86</b><i>→</i></a>
+      <a class="ct" href="mailto:remindme-davydov-2027@mail.ru"><span class="mono">Почта</span><b>remindme-davydov-2027@mail.ru</b><i>→</i></a>
     </div>
   </div>
 </section>
@@ -1144,6 +1162,10 @@ $('#reelMore').addEventListener('click', () => {
   ScrollTrigger.refresh();
   if (!reduce) rise($$('.reel-grid .card.more'));
 });
+
+/* portfolio cards with video play only while on screen */
+const pfVio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.play().catch(()=>{}); else e.target.pause(); }), { threshold: .25 });
+if (!reduce) $$('.pf-shot video').forEach(v => pfVio.observe(v));
 
 /* pipeline: no pin, the four stages play by themselves once the frame is on screen */
 setPipe(0);
