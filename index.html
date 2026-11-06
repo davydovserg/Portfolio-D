@@ -302,9 +302,9 @@ a{color:inherit;text-decoration:none}
 .pf-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--ink-3);border-bottom:1px solid var(--line)}
 .pf-bar i{width:8px;height:8px;border-radius:50%;background:var(--line-2)}
 .pf-bar span{margin-left:8px;font:500 11px/1 var(--f-mono);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pf-shot img,.pf-shot video{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}
+.pf-shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}
 .pf:hover .pf-shot{transform:translateY(-6px);box-shadow:0 0 0 1px var(--tungsten),0 30px 60px -30px rgba(255,138,61,.4)}
-.pf:hover .pf-shot img,.pf:hover .pf-shot video{transform:scale(1.04)}
+.pf:hover .pf-shot img{transform:scale(1.04)}
 .pf-meta .mono{color:var(--tungsten-2)}
 .pf-meta h3{font:600 clamp(17px,1.4vw,20px)/1.25 var(--f-display);letter-spacing:-.02em;margin:6px 0 0}
 .pf-meta p{margin:8px 0 0;color:var(--mute);font-size:15px;max-width:46ch}
@@ -319,8 +319,10 @@ a{color:inherit;text-decoration:none}
 .pf-gh:hover i{transform:translateX(10px) rotate(-45deg)}
 @media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense}}
 .pf-wide{grid-column:span 2}
+.pf-gh{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:clamp(20px,4vw,60px)}
+.pf-gh span{flex:1;max-width:none}
 .pf-wide .pf-meta p{max-width:70ch}
-@media (max-width:640px){.pf-grid{grid-template-columns:1fr}.pf-app,.pf-wide{grid-column:auto}.pf-app{flex-direction:column;align-items:flex-start}}
+@media (max-width:640px){.pf-grid{grid-template-columns:1fr}.pf-app,.pf-wide{grid-column:auto}.pf-app{flex-direction:column;align-items:flex-start}.pf-gh{flex-direction:column;align-items:flex-start}}
 
 .clients{margin-bottom:clamp(48px,6vw,90px)}
 .cl-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
@@ -745,10 +747,6 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Руслана Завалихина</span></div><img src="work/ruslana.jpg" alt="Сайт психолога Русланы Завалихиной: нить ведёт через страницу" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Сайт психолога</span><h3>Руслана Завалихина: редизайн с концептом «Нить», которая ведёт через всю страницу</h3></div>
       </a>
-      <a class="pf pf-wide" href="santehtop/" target="_blank" rel="noopener">
-        <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>santehtop.ru</span></div><video src="video/santehtop.mp4" poster="video/santehtop.jpg" muted loop playsinline preload="none" aria-label="Ролик для главной Сантехтопа: модель среди ванн Abber"></video></div>
-        <div class="pf-meta"><span class="mono">ИИ-видео и первый экран</span><h3>Сантехтоп: видео на главную с настоящими ваннами из каталога</h3><p>Модель идёт к ваннам Abber, которые продаются в магазине. Меняются цвета и вода, в финале оживает логотип. Ролик встроен в первый экран под дизайн сайта.</p></div>
-      </a>
       <a class="pf" href="https://davydovserg.github.io/lidery-ES/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>ЛЕАКИ</span></div><img src="work/leaci.jpg" alt="ЛЕАКИ: сайт международного делового клуба России, Китая и Евразии" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Международный деловой клуб</span><h3>ЛЕАКИ: новый сайт клуба «Лидеры Евроазиатской кооперации»</h3></div>
@@ -1163,9 +1161,6 @@ $('#reelMore').addEventListener('click', () => {
   if (!reduce) rise($$('.reel-grid .card.more'));
 });
 
-/* portfolio cards with video play only while on screen */
-const pfVio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.play().catch(()=>{}); else e.target.pause(); }), { threshold: .25 });
-if (!reduce) $$('.pf-shot video').forEach(v => pfVio.observe(v));
 
 /* pipeline: no pin, the four stages play by themselves once the frame is on screen */
 setPipe(0);
