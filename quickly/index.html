@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quickly — концепт нового сайта</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--y:#F2E504;--ink:#111;--g:#6b6b6b;--bg:#fff;--soft:#f6f5ef;--line:#e6e4d8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.ribbon{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:8px 16px}
+.ribbon b{color:var(--y)}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.nav img{height:34px}
+.nav nav{display:flex;gap:26px;font-weight:500;font-size:15px}
+.nav nav a:hover{color:#000;box-shadow:inset 0 -3px 0 var(--y)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;font-weight:700;padding:14px 24px;border-radius:999px;font-size:15px;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.y{background:var(--y);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.hero{background:var(--y);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;min-height:600px;gap:24px}
+.hero .txt{padding:72px 0 80px}
+.tag{display:inline-block;background:var(--ink);color:var(--y);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:24px;letter-spacing:.02em}
+h1{font-family:Unbounded,sans-serif;font-weight:800;font-size:clamp(38px,6vw,76px);line-height:1;letter-spacing:-.02em}
+.hero p{font-size:19px;max-width:470px;margin:24px 0 34px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .pic{align-self:stretch;background:url(img/woman.jpg) center 20%/cover;border-radius:28px 28px 0 0;margin-top:48px;min-height:420px}
+.facts{display:flex;gap:40px;margin-top:44px;flex-wrap:wrap}
+.facts b{font-family:Unbounded;font-size:30px;display:block}
+.facts span{font-size:14px}
+section{padding:96px 0}
+h2{font-family:Unbounded,sans-serif;font-weight:700;font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-.01em;margin-bottom:14px}
+.lead{color:var(--g);font-size:17px;max-width:560px;margin-bottom:44px}
+.salons{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.salon{border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:6px;transition:border-color .2s,transform .25s cubic-bezier(.2,.8,.2,1)}
+.salon:hover{border-color:var(--ink);transform:translateY(-4px)}
+.salon .m{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.salon .m:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--y);box-shadow:0 0 0 2px var(--ink)}
+.salon h3{font-family:Unbounded;font-size:19px;font-weight:700;margin-top:6px}
+.salon p{color:var(--g);font-size:14px}
+.salon .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:16px;font-weight:700;font-size:15px}
+.salon .row a.go{background:var(--y);padding:8px 16px;border-radius:999px;font-size:14px}
+.services{background:var(--soft)}
+.svc{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:#fff;border-radius:22px;padding:26px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -20px rgba(0,0,0,.25)}
+.card .ico{font-size:28px}
+.card h3{font-family:Unbounded;font-size:17px;font-weight:700;margin:14px 0 6px}
+.card p{font-size:14px;color:var(--g)}
+.card .price{font-weight:700;margin-top:14px}
+.card.hot{background:var(--ink);color:#fff}
+.card.hot p{color:#bbb}
+.card.hot .price{color:var(--y);font-family:Unbounded;font-size:28px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gift{background:var(--y);border-radius:28px;padding:44px;display:flex;flex-direction:column;gap:18px}
+.nominals{display:flex;gap:10px;flex-wrap:wrap}
+.nominals span{background:#fff;border-radius:14px;padding:14px 20px;font-family:Unbounded;font-weight:700;font-size:22px}
+.app{background:var(--ink);color:#fff;border-radius:28px;padding:44px;display:flex;flex-direction:column;gap:18px}
+.app p,.gift p{font-size:16px;max-width:420px}
+.app .btn{background:var(--y);color:var(--ink);align-self:flex-start}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:20px}
+.why div{border-top:3px solid var(--ink);padding-top:18px}
+.why b{font-family:Unbounded;font-size:18px;display:block;margin-bottom:6px}
+.why p{color:var(--g);font-size:15px}
+footer{background:var(--ink);color:#ddd;padding:56px 0 34px;font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.soc{display:flex;gap:10px;flex-wrap:wrap}
+.soc a{border:1px solid #444;border-radius:999px;padding:8px 16px;color:#fff}
+.soc a:hover{border-color:var(--y);color:var(--y)}
+.meta-note{color:#8a8a8a;font-size:12px;margin-top:26px;max-width:640px;border-left:3px solid var(--y);padding-left:12px}
+.copy{color:#777;font-size:12px;margin-top:22px}
+.float{position:fixed;right:16px;bottom:16px;z-index:30;box-shadow:0 10px 30px -8px rgba(0,0,0,.4)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.on{opacity:1;transform:none}
+@media (max-width:900px){
+ .nav nav{display:none}
+ .hero .wrap{grid-template-columns:1fr;min-height:0}
+ .hero .txt{padding:48px 0 0}
+ .hero .pic{min-height:340px;margin-top:0}
+ .salons,.svc{grid-template-columns:1fr 1fr}
+ .split,.why{grid-template-columns:1fr}
+ section{padding:64px 0}
+}
+@media (max-width:560px){
+ .salons,.svc{grid-template-columns:1fr}
+ .gift,.app{padding:28px}
+ .nav .btn{padding:10px 16px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<div class="ribbon">Концепт нового сайта для <b>Quickly</b> · подготовил Сергей Давыдов</div>
+<header><div class="wrap nav">
+ <a href="#"><img src="img/logo.png" alt="Quickly"></a>
+ <nav><a href="#salons">Салоны</a><a href="#services">Услуги и цены</a><a href="#gift">Сертификаты</a><a href="#app">Приложение</a></nav>
+ <a class="btn" href="https://w707332.yclients.ru/" target="_blank">Записаться</a>
+</div></header>
+
+<div class="hero"><div class="wrap">
+ <div class="txt">
+  <span class="tag">ЭКСПРЕСС-КРАСОТА В ТЦ МОСКВЫ</span>
+  <h1>Красиво.<br>Быстро.<br>По пути.</h1>
+  <p>Маникюр, укладка, брови и окрашивание в салонах прямо в торговых центрах — пока вы за покупками.</p>
+  <div class="ctas"><a class="btn" href="https://w707332.yclients.ru/" target="_blank">Записаться онлайн →</a><a class="btn ghost" href="#salons">Найти салон рядом</a></div>
+  <div class="facts"><div><b>6</b><span>салонов в Москве<br>и Зеленограде</span></div><div><b>1890 ₽</b><span>маникюр<br>с гель-лаком</span></div><div><b>KAPOUS<br>DAVINES</b><span>профессиональная<br>косметика</span></div></div>
+ </div>
+ <div class="pic" role="img" aria-label="Укладка Quickly"></div>
+</div></div>
+
+<section id="salons"><div class="wrap">
+ <h2 class="reveal">Выберите салон рядом</h2>
+ <p class="lead reveal">Сразу видно метро, этаж и телефон. Одна кнопка — и запись в нужный салон.</p>
+ <div class="salons">
+  <div class="salon reveal"><span class="m">Деловой центр</span><h3>Афимолл</h3><p>Пресненская наб., 2 · 1 этаж</p><div class="row"><a href="tel:+79100190051">+7 910 019-00-51</a><a class="go" href="https://w707332.yclients.ru/" target="_blank">Запись</a></div></div>
+  <div class="salon reveal"><span class="m">Войковская</span><h3>Метрополис</h3><p>Ленинградское ш., 16А, стр. 4 · 1 этаж</p><div class="row"><a href="tel:+79851212011">+7 985 121-20-11</a><a class="go" href="https://w707332.yclients.ru/" target="_blank">Запись</a></div></div>
+  <div class="salon reveal"><span class="m">Дубровка</span><h3>ТЦ Мозаика</h3><p>7-я Кожуховская, 9 · 2 и 3 этаж</p><div class="row"><a href="tel:+79151328050">+7 915 132-80-50</a><a class="go" href="https://w707332.yclients.ru/" target="_blank">Запись</a></div></div>
+  <div class="salon reveal"><span class="m">Зеленоград</span><h3>ТЦ Иридиум · салон</h3><p>Крюковская пл., 1 · 2 этаж</p><div class="row"><a href="tel:+79031558860">+7 903 155-88-60</a><a class="go" href="https://w707332.yclients.ru/" target="_blank">Запись</a></div></div>
+  <div class="salon reveal"><span class="m">Зеленоград</span><h3>ТЦ Иридиум · маникюр</h3><p>Крюковская пл., 1 · 1 этаж</p><div class="row"><a href="tel:+79031558860">+7 903 155-88-60</a><a class="go" href="https://w707332.yclients.ru/" target="_blank">Запись</a></div></div>
+  <div class="salon reveal" style="background:var(--y);border-color:var(--y)"><span class="m">Скоро</span><h3>Карта всех салонов</h3><p style="color:#333">Интерактивная карта с маршрутом от метро и часами работы.</p><div class="row"><span></span><a class="go" style="background:#111;color:#fff" href="#">Открыть карту</a></div></div>
+ </div>
+</div></section>
+
+<section id="services" class="services"><div class="wrap">
+ <h2 class="reveal">Услуги и цены — в один клик</h2>
+ <p class="lead reveal">Вместо длинного списка — понятные карточки с ценой «от» и кнопкой записи.</p>
+ <div class="svc">
+  <a class="card hot reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">💅</span><div><h3>Маникюр с гель-лаком</h3><p>Хит салонов Quickly</p><div class="price">1890 ₽</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">💇‍♀️</span><div><h3>Стилисты</h3><p>Стрижки и укладки</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">🎨</span><div><h3>Окрашивание</h3><p>KAPOUS / DAVINES</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">✨</span><div><h3>Уход для волос</h3><p>Восстановление и блеск</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">👁</span><div><h3>Брови</h3><p>Коррекция и окрашивание</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">🦶</span><div><h3>Педикюр</h3><p>Аппаратный и классический</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">💎</span><div><h3>Наращивание ногтей</h3><p>Маникюр входит в стоимость</p><div class="price">Цена от … ₽ →</div></div></a>
+  <a class="card reveal" href="https://w707332.yclients.ru/" target="_blank"><span class="ico">🖌</span><div><h3>Дизайн и укрепление</h3><p>Покрытия любой сложности</p><div class="price">Цена от … ₽ →</div></div></a>
+ </div>
+</div></section>
+
+<section><div class="wrap split">
+ <div class="gift reveal" id="gift"><h2>Подарочный сертификат</h2><p>Купить онлайн и сразу отправить подарок в мессенджер — без поездки в салон.</p><div class="nominals"><span>2000 ₽</span><span>3000 ₽</span><span>5000 ₽</span></div><a class="btn" href="#">Купить сертификат</a></div>
+ <div class="app reveal" id="app"><h2>Приложение Quickly</h2><p>Запись за 30 секунд, история визитов, бонусы и напоминания о следующем маникюре.</p><a class="btn" href="#">Скачать приложение</a></div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+ <h2 class="reveal">Почему Quickly</h2>
+ <div class="why">
+  <div class="reveal"><b>По пути</b><p>Салоны в ТЦ у метро — заходите между делами и покупками.</p></div>
+  <div class="reveal"><b>Быстро</b><p>Онлайн-запись на точное время, без ожидания.</p></div>
+  <div class="reveal"><b>Профессионально</b><p>Косметика KAPOUS и DAVINES, опытные мастера.</p></div>
+ </div>
+</div></section>
+
+<footer><div class="wrap">
+ <div class="fgrid">
+  <div><img src="img/logo.png" alt="Quickly" style="height:30px;margin-bottom:12px"><div>Сеть салонов экспресс-красоты · Москва</div></div>
+  <div class="soc"><a href="https://vk.ru/quickly_beauty" target="_blank">ВКонтакте</a><a href="https://www.youtube.com/channel/UCik5LD0BSl7uFqTEaZ6ANNQ" target="_blank">YouTube</a><a href="https://www.instagram.com/quicklybar/" target="_blank">Instagram*</a></div>
+ </div>
+ <p class="meta-note">* Instagram принадлежит компании Meta Platforms Inc., деятельность которой запрещена на территории Российской Федерации (признана экстремистской).</p>
+ <p class="copy">© 2026 Quickly. Концепт дизайна — Сергей Давыдов.</p>
+</div></footer>
+
+<a class="btn y float" href="https://w707332.yclients.ru/" target="_blank">Онлайн-запись</a>
+<script>
+const io=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),(i%4)*80);io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
