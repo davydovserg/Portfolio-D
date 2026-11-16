@@ -308,9 +308,9 @@ a{color:inherit;text-decoration:none}
 .pf-meta .mono{color:var(--tungsten-2)}
 .pf-meta h3{font:600 clamp(17px,1.4vw,20px)/1.25 var(--f-display);letter-spacing:-.02em;margin:6px 0 0}
 .pf-meta p{margin:8px 0 0;color:var(--mute);font-size:15px;max-width:46ch}
-.pf-app{grid-column:span 2;flex-direction:row;align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(20px,3vw,40px);border-radius:10px;background:radial-gradient(80% 90% at 20% 30%,rgba(47,183,174,.18),transparent 70%),var(--ink-2);box-shadow:0 0 0 1px var(--line)}
+.pf-app{flex-direction:column;align-items:flex-start;justify-content:center;gap:clamp(20px,3vw,48px);padding:clamp(20px,3vw,40px);border-radius:10px;background:radial-gradient(80% 90% at 20% 30%,rgba(47,183,174,.18),transparent 70%),var(--ink-2);box-shadow:0 0 0 1px var(--line)}
 .pf-phones{display:flex;gap:10px;flex:0 0 auto}
-.pf-phones img{width:clamp(80px,9vw,140px);aspect-ratio:1080/2340;object-fit:cover;object-position:top;border-radius:14px;box-shadow:0 0 0 4px #0A0A0C,0 20px 40px -20px rgba(0,0,0,.8)}
+.pf-phones img{width:clamp(70px,7.5vw,112px);aspect-ratio:1080/2340;object-fit:cover;object-position:top;border-radius:14px;box-shadow:0 0 0 4px #0A0A0C,0 20px 40px -20px rgba(0,0,0,.8)}
 .pf-phones img:nth-child(2){transform:translateY(-14px)}
 .pf-gh{justify-content:center;padding:clamp(24px,3vw,40px);border-radius:10px;background:var(--tungsten);color:var(--ink);transition:transform .5s var(--ease)}
 .pf-gh strong{font:800 clamp(56px,6vw,96px)/.9 var(--f-display);letter-spacing:-.05em}
@@ -318,8 +318,8 @@ a{color:inherit;text-decoration:none}
 .pf-gh i{font:300 40px/1 var(--f-display);font-style:normal;transition:transform .5s var(--ease)}
 .pf-gh:hover i{transform:translateX(10px) rotate(-45deg)}
 @media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense}}
-.pf-wide{grid-column:span 2}
-.pf-gh{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:clamp(20px,4vw,60px)}
+.pf-grid .pf-meta p{display:none}
+.pf-gh{flex-direction:column;align-items:flex-start;justify-content:space-between;gap:clamp(20px,4vw,60px)}
 .pf-gh span{flex:1;max-width:none}
 .pf-wide .pf-meta p{max-width:70ch}
 @media (max-width:640px){.pf-grid{grid-template-columns:1fr}.pf-app,.pf-wide{grid-column:auto}.pf-app{flex-direction:column;align-items:flex-start}.pf-gh{flex-direction:column;align-items:flex-start}}
@@ -767,7 +767,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
       </ul>
     </div>
     <div class="pf-grid">
-      <a class="pf pf-wide" href="ai-pult/" target="_blank" rel="noopener">
+      <a class="pf" href="ai-pult/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>AI-пульт собственника</span></div><img src="work/ai-pult.jpg" alt="AI-пульт собственника: деньги, риски и решения группы компаний на одном экране" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">AI-сервис для собственника бизнеса</span><h3>AI-пульт собственника: 90 дней внедрения, ветки решений и прогноз против факта</h3><p>Деньги, риски и решения группы из 11 компаний на одном экране. Каждое решение запускает свою ветку событий, а через месяц пульт сверяет прогноз с фактом. Нажмите «Автопилот», и пульт сам проживёт 90 дней за две минуты.</p></div>
       </a>
@@ -775,7 +775,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Время красоты</span></div><img src="work/vremyakrasoty.jpg" alt="Время красоты: премиум-сайт салона красоты с примерочной лака и онлайн-записью" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Салон красоты</span><h3>Время красоты: премиум-сайт салона с примерочной цвета и онлайн-записью</h3></div>
       </a>
-      <a class="pf pf-wide" href="kadr-video/" target="_blank" rel="noopener">
+      <a class="pf" href="kadr-video/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Видеоаналитика KADR</span></div><img src="work/kadr-video.jpg" alt="Лендинг видеоаналитики: стена камер, система выделяет людей, пламя и опасные зоны" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Лендинг B2B-продукта</span><h3>Видеоаналитика на производстве: сайт как стена камер</h3><p>Кадры со станков, складов и буровых выглядят как настоящая диспетчерская, а рамки детектора прямо на экране находят падение, пламя и опасную зону.</p></div>
       </a>
@@ -803,7 +803,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>ракитин-парк.рф</span></div><img src="work/xn.jpg" alt="Ракитин Парк: загородные кварталы в Новой Москве" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Девелопер</span><h3>Ракитин Парк: загородные кварталы в Новой Москве</h3></div>
       </a>
-      <a class="pf pf-wide" href="sushimall/" target="_blank" rel="noopener">
+      <a class="pf" href="sushimall/" target="_blank" rel="noopener">
         <div class="pf-shot"><div class="pf-bar"><i></i><i></i><i></i><span>Sushi&amp;Mall</span></div><img src="work/sushimall.jpg" alt="Sushi&amp;Mall: сайт доставки роллов с корзиной" loading="lazy"></div>
         <div class="pf-meta"><span class="mono">Доставка еды</span><h3>Sushi&amp;Mall: 129 блюд, которые «парят» без фона, и заказ за минуту</h3><p>Меню подтягивается из их магазина на InSales, корзина считает бесплатную доставку от 700 ₽, а каждое блюдо вырезано из фото и висит над тёмным фоном.</p></div>
       </a>
