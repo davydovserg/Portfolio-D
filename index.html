@@ -55,15 +55,19 @@ a{color:inherit;text-decoration:none}
 
 /* nav */
 .nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:28px;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:18px;padding-left:var(--gl);padding-right:var(--gr);transition:transform .5s var(--ease),background .3s,backdrop-filter .3s}
-.nav.solid{background:rgba(12,11,14,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav.solid{background:rgba(12,11,14,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav.hide{transform:translateY(-100%)}
 .logo{display:flex;align-items:center;gap:10px;font:800 20px/1 var(--f-display);letter-spacing:-.02em}
 .logo sup{font:500 10px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);vertical-align:top}
 .logo-rec{width:10px;height:10px;border-radius:50%;background:var(--tungsten);box-shadow:0 0 14px var(--tungsten)}
 @keyframes blink{50%{opacity:.25}}
-.nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;color:var(--mute)}
-.nav-links a{transition:color .2s;white-space:nowrap}
-.nav-links a:hover{color:var(--paper)}
+.nav-links{position:relative;display:flex;gap:2px;margin-left:auto;padding:5px;border-radius:999px;background:linear-gradient(180deg,rgba(38,33,40,.92),rgba(20,17,22,.92));border:1px solid rgba(255,184,120,.28);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 40px -12px rgba(0,0,0,.6)}
+.nav-links a{position:relative;z-index:1;display:flex;align-items:baseline;gap:7px;padding:10px 16px;border-radius:999px;font:500 14.5px/1 var(--f-body);letter-spacing:.01em;color:var(--paper);white-space:nowrap;transition:color .35s var(--ease)}
+.nav-links a i{font:500 10px/1 var(--f-mono);font-style:normal;letter-spacing:.06em;color:var(--tungsten-2);opacity:.85;transition:color .35s var(--ease),opacity .35s}
+.nav-links a.on,.nav-links a:hover{color:#16120F}
+.nav-links a.on i,.nav-links a:hover i{color:#16120F;opacity:.6}
+.nav-ind{position:absolute;z-index:0;top:5px;left:0;height:calc(100% - 10px);width:0;border-radius:999px;background:linear-gradient(135deg,var(--tungsten-2),var(--tungsten));box-shadow:0 0 24px rgba(255,138,61,.55),inset 0 1px 0 rgba(255,255,255,.45);opacity:0;transition:transform .55s var(--ease),width .55s var(--ease),opacity .3s}
+.nav-links a:focus-visible{outline:2px solid var(--tungsten-2);outline-offset:2px}
 .tc{display:flex;align-items:center;gap:8px;color:var(--mute);font-variant-numeric:tabular-nums;padding:8px 12px;border:1px solid var(--line);border-radius:999px}
 .tc b{font-weight:500;color:var(--paper)}
 @media (max-width:1100px){.nav-links{display:none}.tc{margin-left:auto}}
@@ -442,7 +446,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
 <header class="nav" id="nav">
   <a class="logo" href="#top" aria-label="KADR Studio, наверх"><span class="logo-rec"></span>KADR<sup>studio</sup></a>
   <nav class="nav-links" aria-label="Разделы">
-    <a href="#reel">Работы</a><a href="#services">Услуги</a><a href="#portfolio">Сайты и приложения</a><a href="#process">Процесс</a><a href="#faq">Вопросы</a>
+    <span class="nav-ind" aria-hidden="true"></span><a href="#reel"><i>01</i>Работы</a><a href="#services"><i>02</i>Услуги</a><a href="#portfolio"><i>03</i>Сайты и приложения</a><a href="#process"><i>04</i>Процесс</a><a href="#faq"><i>05</i>Вопросы</a>
   </nav>
   <div class="tc mono" title="Таймкод страницы"><span>TC</span><b id="tc">00:00:00:00</b></div>
   <a class="btn btn-sm magnetic" href="#contact">Обсудить проект</a>
@@ -1284,6 +1288,15 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
 addEventListener('load', () => ScrollTrigger.refresh());
 })();
+</script>
+
+<script>
+(()=>{const box=document.querySelector('.nav-links');if(!box)return;const ind=box.querySelector('.nav-ind'),links=[...box.querySelectorAll('a')];let cur=null;
+const move=a=>{if(!a){ind.style.opacity=0;links.forEach(l=>l.classList.remove('on'));return}ind.style.width=a.offsetWidth+'px';ind.style.transform='translateX('+a.offsetLeft+'px)';ind.style.opacity=1;links.forEach(l=>l.classList.toggle('on',l===a))};
+links.forEach(a=>{a.addEventListener('mouseenter',()=>move(a));});box.addEventListener('mouseleave',()=>move(cur));
+const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const spy=()=>{const y=innerHeight*.35;let hit=null;secs.forEach((s,i)=>{const r=s.getBoundingClientRect();if(r.top<=y&&r.bottom>y)hit=links[i]});if(hit!==cur){cur=hit;if(!box.matches(':hover'))move(cur)}};
+addEventListener('scroll',spy,{passive:true});addEventListener('resize',()=>move(cur));spy();})();
 </script>
 </body>
 </html>
