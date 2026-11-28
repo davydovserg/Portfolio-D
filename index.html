@@ -70,7 +70,7 @@ a{color:inherit;text-decoration:none}
 .nav-links a:focus-visible{outline:2px solid var(--tungsten-2);outline-offset:2px}
 .tc{display:flex;align-items:center;gap:8px;color:var(--mute);font-variant-numeric:tabular-nums;padding:8px 12px;border:1px solid var(--line);border-radius:999px}
 .tc b{font-weight:500;color:var(--paper)}
-@media (max-width:1100px){.nav-links{display:none}.tc{margin-left:auto}}
+@media (max-width:1100px){.nav{flex-wrap:wrap;row-gap:10px}.nav-links{order:3;flex:1 0 100%;margin-left:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.nav-links::-webkit-scrollbar{display:none}.nav-links a{padding:9px 13px;font-size:13.5px}.tc{margin-left:auto}}
 @media (max-width:520px){.tc{display:none}.nav .btn-sm{margin-left:auto}}
 
 /* hero */
@@ -501,10 +501,14 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
       <p class="eyebrow mono">Anthropic Academy · ноябрь 2026</p>
       <h2 class="h2">Сертифицирован <em>Anthropic</em></h2>
     </div>
-    <p class="note">Пять официальных курсов от создателей Claude: разработка, API, агенты и работа с ИИ в бизнесе. Каждый сертификат выдан на моё имя и проверяется на сайте учебной платформы Anthropic.</p>
+    <p class="note">Шесть официальных курсов от создателей Claude: разработка, API, агенты, создание продуктов и работа с ИИ в бизнесе. Каждый сертификат выдан на моё имя и проверяется на сайте учебной платформы Anthropic.</p>
   </div>
   <div class="wrap">
     <div class="certs-grid">
+      <figure class="cert cert-main" style="margin:0">
+        <a class="cert-img" href="https://verify.skilljar.com/c/bobawrggxxeh" target="_blank" rel="noopener" aria-label="Проверить сертификат AI Fluency for Builders"><img src="certs/ai-fluency-builders.webp" alt="Сертификат Anthropic: AI Fluency for Builders, Sergey Davydov" width="1484" height="1124" loading="eager"></a>
+        <figcaption class="cert-cap"><span><b>AI Fluency for Builders</b><br><span class="cert-meta mono">ИИ в разработке продуктов · совместно с CodePath</span></span><a class="mono" href="https://verify.skilljar.com/c/bobawrggxxeh" target="_blank" rel="noopener">Проверить ↗</a></figcaption>
+      </figure>
       <figure class="cert cert-main" style="margin:0">
         <a class="cert-img" href="https://verify.skilljar.com/c/y9d2yxdh82zf" target="_blank" rel="noopener" aria-label="Проверить сертификат AI Fluency for Small Businesses"><img src="certs/ai-fluency-small-business.webp" alt="Сертификат Anthropic: AI Fluency for Small Businesses, Sergey Davydov" width="1484" height="1124" loading="eager"></a>
         <figcaption class="cert-cap"><span><b>AI Fluency for Small Businesses</b><br><span class="cert-meta mono">ИИ в малом бизнесе · совместно с PayPal</span></span><a class="mono" href="https://verify.skilljar.com/c/y9d2yxdh82zf" target="_blank" rel="noopener">Проверить ↗</a></figcaption>
@@ -526,7 +530,7 @@ footer{padding-block:40px calc(30px + env(safe-area-inset-bottom,0px));border-to
         <figcaption class="cert-cap"><span><b>AI Fluency: Framework &amp; Foundations</b><br><span class="cert-meta mono">Методология 4D</span></span><a class="mono" href="https://verify.skilljar.com/c/uxw4bt5p37j5" target="_blank" rel="noopener">Проверить ↗</a></figcaption>
       </figure>
     </div>
-    <div class="certs-foot mono"><span><b>5</b> сертификатов · Sergey Davydov</span><span>Нажмите на сертификат, чтобы открыть его проверку</span></div>
+    <div class="certs-foot mono"><span><b>6</b> сертификатов · Sergey Davydov</span><span>Нажмите на сертификат, чтобы открыть его проверку</span></div>
   </div>
 </section>
 
